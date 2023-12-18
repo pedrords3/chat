@@ -1,4 +1,4 @@
-// const WebSocket = require('ws');
+const WebSocket = require('ws');
 // const server = new WebSocket.Server({ port: 3000 });
 
 // import { WebSocket, WebSocketServer } from "ws";
@@ -6,12 +6,11 @@
 // const wss = new WebSocketServer({port: 8080})
 
 
-// const {WebSocketServer} = require("ws")
-const {WebSocket} = require("ws")
+const {WebSocketServer} = require("ws")
 const dotenv = require("dotenv")
 
 dotenv.config()
-const server = new WebSocket({port: process.env.PORT || 8080 })
+const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
 
 let logMessages = []; //* Lista para armazenar mensagens
