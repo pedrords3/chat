@@ -1,6 +1,7 @@
 // const socket = new WebSocket('ws://localhost:3000');
 // const socket = new WebSocket('ws://26.8.200.242:3000');
 const socket = new WebSocket('wss://chat-tqep.onrender.com');
+console.log(socket);
         let username = sessionStorage.getItem('username') || ''; //* Obter o nome de usuário armazenado na sessionStorage
         let lastPageReloadTime = parseInt(sessionStorage.getItem('lastPageReloadTime')) || 0; //* Obter o último tempo de recarregamento da página
 
