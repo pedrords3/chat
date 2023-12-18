@@ -1,0 +1,123 @@
+#chat {
+    background-color: black;
+    color:white;
+    margin: 0px 10px;
+    border-radius: 7px;
+    border: solid 1px black;
+    /* width: 35%; */
+    height: 85vh;
+    overflow-y: scroll; 
+    overflow-x: hidden;
+    word-wrap: break-word;
+}
+
+#chat::-webkit-scrollbar {
+    width: 5px; /* //* Largura da barra de rolagem */
+}
+
+#chat::-webkit-scrollbar-thumb {
+    background-color: #888; /* //*Cor da barra de rolagem */
+    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
+}
+/* //*Estilos para o Internet Explorer */
+#chat::-ms-scrollbar {
+    width: 5px;
+}
+#chat::-ms-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
+#messageInput {
+    height: auto;
+    width: 90%;
+    margin: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    resize: none; /* //* Para evitar a redimensionamento manual */
+}
+.currentUserMessage {
+    /* font-weight: bold; */
+    /* text-align: right; */
+    margin-left: 10px;
+    color: white; /* //* Cor do texto da mensagem */
+}
+
+.currentUserMessage .username {
+    color: rgb(248, 248, 125); /* //* Cor do nome do usuário */
+}
+
+.otherUserMessage {
+    display: inline-block;
+    margin-left: 2px;
+    border-radius: 5px;
+    border: solid 1px white;
+    color: white; /* //* Cor do texto da mensagem */
+    padding: 5px; /* //* Adicionando algum preenchimento para espaçamento interno */
+    max-width: 90%; /* //*Define a largura máxima do balão para 85% do contêiner */
+    word-wrap: break-word; /* //* Garante que palavras longas se quebrem corretamente */
+    min-width: 50%;
+}
+
+.username {
+    color: rgb(255, 255, 255); /* //* Cor do nome do usuário */
+    font-weight: bold;
+}
+
+.otherUsername {
+    color: rgb(255, 255, 255); /* //* Cor do nome do usuário */
+    font-weight: bold;
+}
+
+#btnEnviar{
+    visibility: hidden;
+}
+
+.display{
+    margin: 10px;
+}
+
+body{
+    background-color: black;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.Mesa{
+    width:100%; 
+    height: 100%; 
+    background-color: black;
+}
+
+.cartas{
+    width: 130px;
+    height: 200px;
+    border: solid 1px rgb(172, 36, 172);
+    border-radius: 5px;
+    margin: 0px 10px;
+}
+
+.answerMessage {
+    background-color: #c9f7f5; /* Adicione a cor desejada para mensagens de resposta */
+}
+
+.cursorPointer{
+    cursor: pointer;
+}
+
+#escolhas{
+    height: 200px;
+    width: 400px;
+    overflow-y: auto;
+    border: solid 1px white;
+}
+
+#Rodada{
+    margin-right: 100px;
+    overflow-y: auto;
+}
+
+.textoJogadoresOn{
+    font-size: 12px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}

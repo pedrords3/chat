@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+
+    <title>HexChat</title> 
+    <!-- <script src="assets/js/bootstrap.min.js"></script> -->    
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+
+</head>
+<body>   
+    <div class="container-fluid display">
+        <div class="row">
+            <div class="col-md-3"> <!-- Coluna à esquerda ocupando 25% -->
+                <div id="chat"></div>
+                <textarea id="messageInput" placeholder="Digite aqui" maxlength="100"></textarea>
+                <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
+            </div>
+            <div class="col-md-9" style="height: 100vh;">  <!-- Coluna à direita ocupando 75% -->
+                <!-- //! Conteúdo para a coluna à direita -->
+                <div class="Mesa">
+                    <p class="text-center text-white">HEX PLAY</p>
+
+                    
+                    <div id="deck" class="d-flex justify-content-between">
+                        <div id="escolhas" class="escolhasPlayers text-white ">
+                            <!-- //* Adicionar cartas escolhidas -->
+                        </div>
+                        <div class="cartas text-white text-center">
+                            <p id="numPergunta">PERGUNTA 1</p>
+                            <p id="question">Qual será o nome do próximo filme lançado?</p>
+                        </div>
+                        <div id="Rodada" class="text-white ">
+                            <p>Rodada 1</p>
+                            <p>Pontuação:</p>
+                            <div id="jogadoresOnline">
+                                <h5 class="textoJogadoresOn">Pedro: 1</h5>
+                                <h5 class="textoJogadoresOn">Jose: 0</h5>
+                                <h5 class="textoJogadoresOn">Maria:2</h5>
+                                
+                                <!-- //!adicionar todos os jogadores -->
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="text-center text-white">SUAS RESPOSTAS</p>
+                    <div id="resposta" class="row">
+                        <div class="cartas text-white answer cursorPointer" codigo="1">Resposta 1</div>
+                        <div class="cartas text-white answer cursorPointer" codigo="2">Resposta 2</div>
+                        <div class="cartas text-white answer cursorPointer" codigo="3">Resposta 3</div>
+                        <div class="cartas text-white answer cursorPointer" codigo="4">Resposta 4</div>
+                        <div class="cartas text-white answer cursorPointer" codigo="5">Resposta 5</div>
+                        <div class="cartas text-white answer cursorPointer" codigo="6">Resposta 6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- //! SCRIPT CLIENT -->
+    <script src="assets/js/index.js"></script>
+</body>
+</html>
