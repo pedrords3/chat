@@ -1,15 +1,10 @@
-const WebSocket = require('ws');
+const WebSocket = require('wss');
 const server = new WebSocket.Server({ port: 3000 });
-// const server = new WebSocket.Server({ port: 3000, host: '0.0.0.0' });
-
 
 let logMessages = []; //* Lista para armazenar mensagens
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
-    // socket.on('headers', (headers) => {
-    //     headers.push('Access-Control-Allow-Origin: *');
-    // });
 
     //* Declarar Usuario fora do escopo do evento 'close'
     let Usuario = '';
