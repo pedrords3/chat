@@ -1,4 +1,4 @@
-// const WebSocket = require('ws');
+const WebSocket = require('ws');
 // const server = new WebSocket.Server({ port: 3000 });
 
 // import { WebSocket, WebSocketServer } from "ws";
@@ -6,7 +6,7 @@
 // const wss = new WebSocketServer({port: 8080})
 
 
-const {WebSocketServer} = require("ws")
+// const {WebSocketServer} = require("ws")
 const dotenv = require("dotenv")
 
 dotenv.config()
