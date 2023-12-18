@@ -1,5 +1,6 @@
 // const socket = new WebSocket('ws://localhost:3000');
-const socket = new WebSocket('ws://52.41.36.82:3000');
+// const socket = new WebSocket('ws://172.16.20.82:3000');
+const socket = new WebSocket('wss://chat-plo6.onrender.com');
 // const socket = new WebSocket('wss://177.144.138.221:3000');
         let username = sessionStorage.getItem('username') || ''; //* Obter o nome de usuário armazenado na sessionStorage
         let lastPageReloadTime = parseInt(sessionStorage.getItem('lastPageReloadTime')) || 0; //* Obter o último tempo de recarregamento da página
