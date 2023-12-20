@@ -21,8 +21,8 @@ let quantidadeUsuariosOnline = 0;
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
 
-    //* Declarar Usuario fora do escopo do evento 'close'
-    let Usuario = '';
+    //* Declarar usuario fora do escopo do evento 'close'
+    let usuario = '';
 
     //* Enviar histórico de mensagens existentes para o novo cliente
     if (logMessages.length > 0) {
@@ -35,18 +35,19 @@ server.on('connection', (socket) => {
         try {
             const data = JSON.parse(message);
            
-            if (data.type === 'enter') {
+            if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
-                Usuario = data.sender;
-                // usuariosOnline.add(Usuario);
+                usuario = data.sender;
+                
+                usuariosOnline.add(usuario);
                 quantidadeUsuariosOnline++;
                  // Enviar lista atualizada de usuários online para todos os clientes
                 
-                console.log(`Usuário definido como: ${Usuario}`);
+                console.log(`Usuário definido como: ${usuario}`);
                 
 
                 //* Enviar mensagem de entrada para o novo cliente
-                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: Usuario };
+                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario };
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(enterMessage));
@@ -86,8 +87,8 @@ server.on('connection', (socket) => {
                 });
             }else if (data.type === 'exit') {
                 quantidadeUsuariosOnline--;
-                
-                usuariosOnline.delete(Usuario);
+
+                usuariosOnline.delete(usuario);
 
                 // Enviar lista atualizada de usuários online para todos os clientes
                 broadcastUsuariosOnline();
@@ -127,7 +128,7 @@ server.on('connection', (socket) => {
         console.log('Cliente desconectado');
 
         //* Enviar mensagem de saída para os outros clientes
-        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: Usuario };
+        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
         server.clients.forEach((client) => {
             if (client !== socket && client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(exitMessage));
