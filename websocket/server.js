@@ -12,6 +12,9 @@ const dotenv = require("dotenv")
 dotenv.config()
 const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
+// Adicione esta variável no início do seu arquivo server.js
+const usuariosOnline = new Set();
+
 
 let logMessages = []; //* Lista para armazenar mensagens
 
@@ -31,11 +34,17 @@ server.on('connection', (socket) => {
     socket.on('message', (message) => {
         try {
             const data = JSON.parse(message);
-
+           
+            console.log("----------------------");
+            console.log(data.type);
             if (data.type === 'enter') {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 Usuario = data.sender;
+                usuariosOnline.add(Usuario);
+                 // Enviar lista atualizada de usuários online para todos os clientes
+                
                 console.log(`Usuário definido como: ${Usuario}`);
+                
 
                 //* Enviar mensagem de entrada para o novo cliente
                 const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: Usuario };
@@ -43,7 +52,8 @@ server.on('connection', (socket) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(enterMessage));
                     }
-                });
+                }); 
+                broadcastUsuariosOnline();
             } else if (data.type === 'message') {
                 console.log(`Recebido de ${data.sender}: ${data.data}`);
 
@@ -75,11 +85,27 @@ server.on('connection', (socket) => {
                         client.send(JSON.stringify({ type: 'answer', data: data.data, sender: data.sender, resposta: data.resposta }));
                     }
                 });
+            }else if (data.type === 'exit') {
+                usuariosOnline.delete(Usuario);
+
+                // Enviar lista atualizada de usuários online para todos os clientes
+                broadcastUsuariosOnline();
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
         }
+
     });
+
+    function broadcastUsuariosOnline() {
+        const usuariosArray = Array.from(usuariosOnline);
+        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray };
+        server.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(usuariosOnlineMessage));
+            }
+        });
+    }
 
     //* Event listener para fechar a conexão
     socket.on('close', () => {
