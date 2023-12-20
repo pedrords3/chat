@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 
 const {WebSocketServer} = require("ws");
 const dotenv = require("dotenv");
-const perguntas = require("./Perguntas");
+const perguntas = require("./erguntas");
 
 dotenv.config()
 const server = new WebSocketServer({port: process.env.PORT || 8080 })
