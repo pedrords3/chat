@@ -141,7 +141,8 @@ server.on('connection', (socket) => {
     //* Event listener para fechar a conexão
     socket.on('close', () => {
         console.log('Cliente desconectado');
-        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
+        // const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
+        const exitMessage = { type: 'exit', data: quantidadeUsuariosOnline, sender: usuario };
     
         //* Remover o usuário da lista de usuários online
         if (usuariosOnline.has(usuario)) {
