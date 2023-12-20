@@ -14,7 +14,7 @@ const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
 // Adicione esta variável no início do seu arquivo server.js
 const usuariosOnline = new Set();
-
+let quantidadeUsuariosOnline = 0;
 
 let logMessages = []; //* Lista para armazenar mensagens
 
@@ -35,12 +35,11 @@ server.on('connection', (socket) => {
         try {
             const data = JSON.parse(message);
            
-            console.log("----------------------");
-            console.log(data.type);
             if (data.type === 'enter') {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 Usuario = data.sender;
                 usuariosOnline.add(Usuario);
+                quantidadeUsuariosOnline++;
                  // Enviar lista atualizada de usuários online para todos os clientes
                 
                 console.log(`Usuário definido como: ${Usuario}`);
@@ -86,6 +85,7 @@ server.on('connection', (socket) => {
                     }
                 });
             }else if (data.type === 'exit') {
+                quantidadeUsuariosOnline--;
                 usuariosOnline.delete(Usuario);
 
                 // Enviar lista atualizada de usuários online para todos os clientes
@@ -100,9 +100,23 @@ server.on('connection', (socket) => {
     function broadcastUsuariosOnline() {
         const usuariosArray = Array.from(usuariosOnline);
         const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray };
+
+        // Enviar lista atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(usuariosOnlineMessage));
+            }
+        });
+
+        // Atualizar a quantidade de usuários online
+        updateQuantidadeUsuariosOnline();
+    }
+
+    function updateQuantidadeUsuariosOnline() {
+        // Enviar a quantidade atualizada de usuários online para todos os clientes
+        server.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }
         });
     }
