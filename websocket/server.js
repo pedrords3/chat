@@ -39,9 +39,10 @@ server.on('connection', (socket) => {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 usuario = data.sender;
                 
-                usuariosOnline.add(usuario);
-                quantidadeUsuariosOnline++;
-                 // Enviar lista atualizada de usuários online para todos os clientes
+                if (!usuariosOnline.has(usuario)) {
+                    quantidadeUsuariosOnline++;
+                    usuariosOnline.add(usuario);
+                }
                 
                 console.log(`Usuário definido como: ${usuario}`);
                 
@@ -53,7 +54,11 @@ server.on('connection', (socket) => {
                         client.send(JSON.stringify(enterMessage));
                     }
                 }); 
-                broadcastUsuariosOnline();
+                // broadcastUsuariosOnline();
+                 
+                //* Enviar quantidade atualizada de usuários online para o cliente que acabou de se conectar
+                socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
+
             } else if (data.type === 'message') {
                 console.log(`Recebido de ${data.sender}: ${data.data}`);
 
@@ -91,7 +96,8 @@ server.on('connection', (socket) => {
                 usuariosOnline.delete(usuario);
 
                 // Enviar lista atualizada de usuários online para todos os clientes
-                broadcastUsuariosOnline();
+                // broadcastUsuariosOnline();
+                broadcastQuantidadeUsuariosOnline();
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
@@ -99,20 +105,28 @@ server.on('connection', (socket) => {
 
     });
 
-    function broadcastUsuariosOnline() {
-        const usuariosArray = Array.from(usuariosOnline);
-        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray };
-
-        // Enviar lista atualizada de usuários online para todos os clientes
+    function broadcastQuantidadeUsuariosOnline() {
+        // Enviar quantidade atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(usuariosOnlineMessage));
+                client.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }
         });
-
-        // Atualizar a quantidade de usuários online
-        updateQuantidadeUsuariosOnline();
     }
+    // function broadcastUsuariosOnline() {
+    //     const usuariosArray = Array.from(usuariosOnline);
+    //     const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray };
+
+    //     // Enviar lista atualizada de usuários online para todos os clientes
+    //     server.clients.forEach((client) => {
+    //         if (client.readyState === WebSocket.OPEN) {
+    //             client.send(JSON.stringify(usuariosOnlineMessage));
+    //         }
+    //     });
+
+    //     // Atualizar a quantidade de usuários online
+    //     updateQuantidadeUsuariosOnline();
+    // }
 
     function updateQuantidadeUsuariosOnline() {
         // Enviar a quantidade atualizada de usuários online para todos os clientes
