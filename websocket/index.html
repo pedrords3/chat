@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    
-
     <title>HexChat</title> 
-    <!-- <script src="assets/js/bootstrap.min.js"></script> -->    
+
+    <script src="assets/js/jquery.3.2.1.min.js"></script>    
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/index.css">
 
@@ -24,8 +23,16 @@
             <div class="col-md-9" style="height: 100vh;">  <!-- Coluna à direita ocupando 75% -->
                 <!-- //! Conteúdo para a coluna à direita -->
                 <div class="Mesa">
-                    <p class="text-center text-white">HEX PLAY</p>
-
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >HEX PLAY</p>
+                            </div>
+                            <div class="col text-right">
+                                <p >Jogadores online: <span id="PlayersOn"></span> </p>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div id="deck" class="d-flex justify-content-between">
                         <div id="escolhas" class="escolhasPlayers text-white ">
@@ -33,38 +40,34 @@
                         </div>
                         <div class="cartas text-white text-center">
                             <p id="numPergunta">PERGUNTA 1</p>
-                            <p id="question">Qual será o nome do próximo filme lançado?</p>
+                            <p id="question">Qual será a resposta?</p>
                         </div>
                         <div id="Rodada" class="text-white ">
                             <p>Rodada 1</p>
                             <p>Pontuação:</p>
-                            <div id="jogadoresOnline">
-                                <h5 class="textoJogadoresOn">Pedro: 1</h5>
-                                <h5 class="textoJogadoresOn">Jose: 0</h5>
-                                <h5 class="textoJogadoresOn">Maria:2</h5>
-                                
-                                <!-- //!adicionar todos os jogadores -->
+                            <div id="jogadoresOnline" >
+                                <!-- <h5 class="textoJogadoresOn">Pedro: 1</h5>-->
+                                <!-- //!adicionar todos os jogadores dinamicamente -->
                             </div>
                         </div>
+                        
                     </div>
                     <br>
                     <p class="text-center text-white">SUAS RESPOSTAS</p>
                     <div id="resposta" class="row">
-                        <div class="cartas text-white answer cursorPointer" codigo="1">Resposta 1</div>
-                        <div class="cartas text-white answer cursorPointer" codigo="2">Resposta 2</div>
-                        <div class="cartas text-white answer cursorPointer" codigo="3">Resposta 3</div>
-                        <div class="cartas text-white answer cursorPointer" codigo="4">Resposta 4</div>
-                        <div class="cartas text-white answer cursorPointer" codigo="5">Resposta 5</div>
-                        <div class="cartas text-white answer cursorPointer" codigo="6">Resposta 6</div>
+                        <!-- <div class="cartas text-white  cursorPointer" codigo="1">
+                            <div class="carta-content answer">Tamanho da carta</div>
+                        </div>
+                        <div class="cartas text-white  cursorPointer" codigo="2">
+                            <div class="carta-content answer">Avada Kadavra</div>
+                        </div> -->
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
     
-    
-
-
     <!-- //! SCRIPT CLIENT -->
     <script src="assets/js/index.js"></script>
 </body>

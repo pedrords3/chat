@@ -1,10 +1,7 @@
 const WebSocket = require('ws');
 // const server = new WebSocket.Server({ port: 3000 });
-
 // import { WebSocket, WebSocketServer } from "ws";
-
 // const wss = new WebSocketServer({port: 8080})
-
 
 const {WebSocketServer} = require("ws")
 const dotenv = require("dotenv")
@@ -12,7 +9,6 @@ const dotenv = require("dotenv")
 dotenv.config()
 const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
-// Adicione esta variável no início do seu arquivo server.js
 const usuariosOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
@@ -77,13 +73,13 @@ server.on('connection', (socket) => {
                 console.log(data);
                 console.log(`Resposta recebida de ${data.sender}: ${data.resposta}`);
     
-                // Adicionar resposta ao log
+                //* Adicionar resposta ao log
                 logMessages.push({ sender: data.sender, data: data.data, resposta: data.resposta });
     
-                // Imprimir o log de mensagens no console do servidor
+                //* Imprimir o log de mensagens no console do servidor
                 console.log('Log de mensagens:', logMessages);
     
-                // Broadcast da resposta para todos os clientes
+                //* Transmissão da resposta para todos os clientes
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({ type: 'answer', data: data.data, sender: data.sender, resposta: data.resposta }));
@@ -94,7 +90,7 @@ server.on('connection', (socket) => {
 
                 usuariosOnline.delete(usuario);
 
-                // Enviar lista atualizada de usuários online para todos os clientes
+                //* Enviar lista atualizada de usuários online para todos os clientes
                 broadcastUsuariosOnline();
                 broadcastQuantidadeUsuariosOnline();
                 socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
@@ -106,7 +102,7 @@ server.on('connection', (socket) => {
     });
 
     function broadcastQuantidadeUsuariosOnline() {
-        // Enviar quantidade atualizada de usuários online para todos os clientes
+        //* Enviar quantidade atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
@@ -152,27 +148,17 @@ server.on('connection', (socket) => {
             broadcastUsuariosOnline();
             broadcastQuantidadeUsuariosOnline();
     
-            const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline };
+            const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }; //* Atualiza quantidade de jogadores online
             //* Enviar mensagem de saída para os outros clientes
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === WebSocket.OPEN) {
+                    //*Envia retorno para o client
                     client.send(JSON.stringify(exitMessage));
-                    client.send(JSON.stringify(qtdUsuarios));
+                    client.send(JSON.stringify(qtdUsuarios)); 
                 }
             });
         }
-        // console.log('Cliente desconectado');
-        // broadcastUsuariosOnline();
-        // broadcastQuantidadeUsuariosOnline();
-        // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
 
-        // //* Enviar mensagem de saída para os outros clientes
-        // const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
-        // server.clients.forEach((client) => {
-        //     if (client !== socket && client.readyState === WebSocket.OPEN) {
-        //         client.send(JSON.stringify(exitMessage));
-        //     }
-        // });
     });
 });
 

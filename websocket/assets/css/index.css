@@ -28,6 +28,40 @@
     border-radius: 5px;
 }
 
+#resposta::-webkit-scrollbar {
+    width: 5px; /* //* Largura da barra de rolagem */
+}
+
+#resposta::-webkit-scrollbar-thumb {
+    background-color: #888; /* //*Cor da barra de rolagem */
+    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
+}
+/* //*Estilos para o Internet Explorer */
+#resposta::-ms-scrollbar {
+    width: 5px;
+}
+#resposta::-ms-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
+#Rodada::-webkit-scrollbar {
+    width: 5px; /* //* Largura da barra de rolagem */
+}
+
+#Rodada::-webkit-scrollbar-thumb {
+    background-color: #888; /* //*Cor da barra de rolagem */
+    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
+}
+/* //*Estilos para o Internet Explorer */
+#Rodada::-ms-scrollbar {
+    width: 5px;
+}
+#Rodada::-ms-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
 #messageInput {
     height: auto;
     width: 90%;
@@ -83,18 +117,30 @@ body{
     overflow-x: hidden;
 }
 
-.Mesa{
-    width:100%; 
-    height: 100%; 
+.Mesa {
+    width: 100%;
+    height: 100%;
     background-color: black;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.cartas{
-    width: 130px;
+.cartas {
+    width: 15%;
+    max-width: 150px;
     height: 200px;
     border: solid 1px rgb(172, 36, 172);
     border-radius: 5px;
-    margin: 0px 10px;
+    margin: 5px 1%;
+    display: flex;
+    flex-direction: column;
+}
+.carta-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* Adicione algum espaço interno para melhorar o visual */
 }
 
 .answerMessage {
@@ -107,7 +153,7 @@ body{
 
 #escolhas{
     height: 200px;
-    width: 400px;
+    width: 50%;
     overflow-y: auto;
     border: solid 1px white;
 }
@@ -115,9 +161,29 @@ body{
 #Rodada{
     margin-right: 100px;
     overflow-y: auto;
+    height: 200px;
+    width: 20%;
 }
 
 .textoJogadoresOn{
     font-size: 12px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#resposta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+/*//! Adapte as configurações conforme necessário para diferentes tamanhos de tela usando media queries */
+
+@media (max-width: 600px) {
+    .cartas {
+        width: 100%;
+        max-width: none;
+        margin-bottom: 10px;
+    }
 }
