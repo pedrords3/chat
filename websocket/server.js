@@ -14,9 +14,9 @@ const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
 // Adicione esta variável no início do seu arquivo server.js
 const usuariosOnline = new Set();
-let quantidadeUsuariosOnline = 0;
 
 let logMessages = []; //* Lista para armazenar mensagens
+let quantidadeUsuariosOnline = 0;
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -38,7 +38,7 @@ server.on('connection', (socket) => {
             if (data.type === 'enter') {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 Usuario = data.sender;
-                usuariosOnline.add(Usuario);
+                // usuariosOnline.add(Usuario);
                 quantidadeUsuariosOnline++;
                  // Enviar lista atualizada de usuários online para todos os clientes
                 
@@ -86,6 +86,7 @@ server.on('connection', (socket) => {
                 });
             }else if (data.type === 'exit') {
                 quantidadeUsuariosOnline--;
+                
                 usuariosOnline.delete(Usuario);
 
                 // Enviar lista atualizada de usuários online para todos os clientes
