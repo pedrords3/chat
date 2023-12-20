@@ -141,15 +141,36 @@ server.on('connection', (socket) => {
     //* Event listener para fechar a conexão
     socket.on('close', () => {
         console.log('Cliente desconectado');
-        broadcastUsuariosOnline();
-
-        //* Enviar mensagem de saída para os outros clientes
         const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
-        server.clients.forEach((client) => {
-            if (client !== socket && client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(exitMessage));
-            }
-        });
+    
+        // Remover o usuário da lista de usuários online
+        if (usuariosOnline.has(usuario)) {
+            usuariosOnline.delete(usuario);
+            quantidadeUsuariosOnline--;
+    
+            // Enviar lista atualizada de usuários online para todos os clientes
+            broadcastUsuariosOnline();
+            broadcastQuantidadeUsuariosOnline();
+    
+            // Enviar mensagem de saída para os outros clientes
+            server.clients.forEach((client) => {
+                if (client !== socket && client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(exitMessage));
+                }
+            });
+        }
+        // console.log('Cliente desconectado');
+        // broadcastUsuariosOnline();
+        // broadcastQuantidadeUsuariosOnline();
+        // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
+
+        // //* Enviar mensagem de saída para os outros clientes
+        // const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
+        // server.clients.forEach((client) => {
+        //     if (client !== socket && client.readyState === WebSocket.OPEN) {
+        //         client.send(JSON.stringify(exitMessage));
+        //     }
+        // });
     });
 });
 
