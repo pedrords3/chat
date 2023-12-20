@@ -141,8 +141,7 @@ server.on('connection', (socket) => {
     //* Event listener para fechar a conexão
     socket.on('close', () => {
         console.log('Cliente desconectado');
-        // const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
-        const exitMessage = { type: 'exit', data: quantidadeUsuariosOnline, sender: usuario };
+        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
     
         //* Remover o usuário da lista de usuários online
         if (usuariosOnline.has(usuario)) {
@@ -153,10 +152,12 @@ server.on('connection', (socket) => {
             broadcastUsuariosOnline();
             broadcastQuantidadeUsuariosOnline();
     
+            const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline };
             //* Enviar mensagem de saída para os outros clientes
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify(exitMessage));
+                    client.send(JSON.stringify(qtdUsuarios));
                 }
             });
         }
