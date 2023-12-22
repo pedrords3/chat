@@ -8,6 +8,14 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
     //*  Event listener para quando a conexão é aberta
     socket.addEventListener('open', (event) => {
         console.log('Conectado ao servidor WebSocket');
+
+        // Lógica para permitir que o cliente escolha ou crie uma sala
+        const escolherSala = prompt('Digite o ID da sala para entrar ou deixe em branco para criar uma nova sala:');
+        if (escolherSala) {
+            socket.send(JSON.stringify({ type: 'joinSala', salaId: escolherSala }));
+        } else {
+            socket.send(JSON.stringify({ type: 'criarSala' }));
+        }
         
         //* Se o nome de usuário ainda não estiver definido, solicitar e definir o nome de usuário
         if (!username) {
@@ -88,6 +96,22 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             quantidadeUsuariosOnlineSpan.innerText = messageData.data;
     
             chatDiv.innerHTML += `<p><strong>${senderName}:</strong> ${messageText}</p>`;
+
+        }else if (messageType === 'novaRodada') { //* Rodada Pergunta
+            const rodadaAtual = messageData.data.rodada;
+            const pergunta = messageData.data.pergunta;
+            const opcoes = messageData.data.opcoes;
+    
+            console.log(`Iniciando a rodada ${rodadaAtual}`);
+            // console.log(`Pergunta: ${pergunta}`);
+            // console.log(`Opções: ${opcoes.join(', ')}`);
+    
+            // Implemente a lógica para exibir a pergunta e opções no cliente
+            const perguntaRodada = document.getElementById('question');
+            perguntaRodada.innerText = pergunta;
+            const numRodada = document.getElementById('numPergunta');
+            numRodada.innerText = "PERGUNTA "+ rodadaAtual;
+
         }
 
         chatDiv.scrollTop = chatDiv.scrollHeight;
