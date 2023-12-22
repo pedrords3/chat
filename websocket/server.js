@@ -23,7 +23,7 @@ function iniciarNovaRodada() {
 function obterPerguntaAleatoria() {
     // Lógica para obter uma pergunta aleatória sem repetição
     // Certifique-se de implementar a lógica para evitar repetição de perguntas
-    // Aqui, estamos usando um simples array shuffle para obter uma pergunta aleatória
+    // Array shuffle para obter uma pergunta aleatória
     const perguntasEmbaralhadas = perguntas.slice().sort(() => Math.random() - 0.5);
     return perguntasEmbaralhadas[0];
 }
@@ -34,11 +34,11 @@ function enviarNovaRodadaParaClientes() {
         data: {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
-            opcoes: perguntaAtual.opcoes,
+            // opcoes: perguntaAtual.opcoes,
         },
     };
 
-    // Enviar mensagem para todos os clientes
+    //* Enviar mensagem para todos os clientes
     server.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(mensagemNovaRodada));
@@ -69,6 +69,13 @@ server.on('connection', (socket) => {
     socket.on('message', (message) => {
         try {
             const data = JSON.parse(message);
+            
+            if (data.type === 'joinSala') {
+                const salaId = data.salaId;
+                entrarNaSala(socket, salaId);
+            } else if (data.type === 'criarSala') {
+                criarSala(socket);
+            }
            
             if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
@@ -201,4 +208,31 @@ server.on('connection', (socket) => {
     });
     iniciarNovaRodada();
 });
+
+// Lógica para o cliente entrar em uma sala existente
+function entrarNaSala(socket, salaId) {
+    if (salas.has(salaId)) {
+        const sala = salas.get(salaId);
+        sala.push(socket);
+        // Adicione mais lógica conforme necessário (como notificar outros clientes da sala)
+    } else {
+        // Sala não encontrada
+        socket.send(JSON.stringify({ type: 'erro', data: 'Sala não encontrada.' }));
+    }
+}
+
+// Lógica para o cliente criar uma nova sala
+function criarSala(socket) {
+    const novaSalaId = gerarSalaId(); // Implemente a geração de IDs de sala
+    const novaSala = [socket];
+    salas.set(novaSalaId, novaSala);
+    // Adicione mais lógica conforme necessário (como notificar outros clientes da nova sala)
+    socket.send(JSON.stringify({ type: 'salaCriada', data: { salaId: novaSalaId } }));
+}
+
+// Função para gerar um ID de sala único
+function gerarSalaId() {
+    // Lógica para gerar um ID único (pode ser um UUID ou algo semelhante)
+    // Certifique-se de implementar uma lógica robusta para evitar colisões de IDs
+}
 
