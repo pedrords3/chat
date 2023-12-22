@@ -211,19 +211,19 @@ server.on('connection', (socket) => {
     iniciarNovaRodada();
 });
 
-// Lógica para o cliente entrar em uma sala existente
+//* Entrar em uma sala existente
 function entrarNaSala(socket, salaId) {
     if (salas.has(salaId)) {
         const sala = salas.get(salaId);
         sala.push(socket);
         // Adicione mais lógica conforme necessário (como notificar outros clientes da sala)
     } else {
-        // Sala não encontrada
-        socket.send(JSON.stringify({ type: 'erro', data: 'Sala não encontrada.' }));
+        //* Sala não encontrada
+        socket.send(JSON.stringify({ type: 'erroSala', data: 'Sala não encontrada.' }));
     }
 }
 
-// Lógica para o cliente criar uma nova sala
+//* Cliente criar uma nova sala
 function criarSala(socket) {
     const novaSalaId = gerarSalaId(); // Implemente a geração de IDs de sala
     const novaSala = [socket];
@@ -232,7 +232,7 @@ function criarSala(socket) {
     socket.send(JSON.stringify({ type: 'salaCriada', data: { salaId: novaSalaId } }));
 }
 
-// Função para gerar um ID de sala único
+//* Gerar um ID de sala único
 function gerarSalaId() {
     // Lógica para gerar um ID único (pode ser um UUID ou algo semelhante)
     // Certifique-se de implementar uma lógica robusta para evitar colisões de IDs

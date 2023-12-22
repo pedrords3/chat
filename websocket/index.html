@@ -10,9 +10,19 @@
     <script src="assets/js/jquery.3.2.1.min.js"></script>    
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
 
 </head>
 <body>   
+
+    <!-- //! LOADER -->
+    <div id="loader" class="justify-content-center align-items-center text-white d-print-none" style="display:none;height:100%; width:100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))">
+		<p style="width: 48px; ">
+			<span class="fa fa-spinner fa-spin fa"></span>
+		</p>
+		<p id="TextoLoad" style="font-weight:bold">Carregando...</p>
+	</div>
+
     <div class="container-fluid display">
         <div class="row">
             <div class="col-md-3"> <!-- Coluna à esquerda ocupando 25% -->
@@ -43,7 +53,7 @@
                             <p id="question">Qual será a resposta?</p>
                         </div>
                         <div id="Rodada" class="text-white ">
-                            <p>Rodada 1</p>
+                            <!-- <p>Rodada 1</p> -->
                             <p>Pontuação:</p>
                             <div id="jogadoresOnline" >
                                 <!-- <h5 class="textoJogadoresOn">Pedro: 1</h5>-->
@@ -53,7 +63,18 @@
                         
                     </div>
                     <br>
-                    <p class="text-center text-white">SUAS RESPOSTAS</p>
+
+                    <!-- <p class="text-center text-white">SUAS RESPOSTAS</p> -->
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >SUAS RESPOSTAS</p>
+                            </div>
+                            <div class="col text-left">
+                                <button>Encerrar Rodada</button>
+                            </div>
+                        </div>
+                    </div>
                     <div id="resposta" class="row">
                         <!-- <div class="cartas text-white  cursorPointer" codigo="1">
                             <div class="carta-content answer">Tamanho da carta</div>
