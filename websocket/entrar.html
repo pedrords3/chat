@@ -5,90 +5,91 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>HexPlay Entrar</title> 
+    <title>HexChat</title> 
 
     <script src="assets/js/jquery.3.2.1.min.js"></script>    
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
 
 </head>
-<body>  
+<body>   
 
-    <div class="d-flex justify-content-center text-white">BEM VINDO</div>
+    <!-- //! LOADER -->
+    <div id="loader" class="justify-content-center align-items-center text-white d-print-none" style="display:none;height:100%; width:100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))">
+		<p style="width: 48px; ">
+			<span class="fa fa-spinner fa-spin fa"></span>
+		</p>
+		<p id="TextoLoad" style="font-weight:bold">Carregando...</p>
+	</div>
 
-    <div class="d-flex justify-content-around text-white" >
-        <div >
-            <p>Salas Criadas:</p>
-            <div id="salasCriadas" style="border: solid 1px white; height: 80vh; width: 50vh">
-                <div style="border:solid 1px purple">
-                    <button class="btn Sala1" style="width: 100%;">Sala 1</button>
-                </div>
-                
+    <div class="container-fluid display">
+        <div class="row">
+            <div class="col-md-3"> <!-- Coluna à esquerda ocupando 25% -->
+                <div id="chat"></div>
+                <textarea id="messageInput" placeholder="Digite aqui" maxlength="100"></textarea>
+                <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
             </div>
+            <div class="col-md-9" style="height: 100vh;">  <!-- Coluna à direita ocupando 75% -->
+                <!-- //! Conteúdo para a coluna à direita -->
+                <div class="Mesa">
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >HEX PLAY</p>
+                            </div>
+                            <div class="col text-right">
+                                <p >Jogadores online: <span id="PlayersOn"></span> </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="deck" class="d-flex justify-content-between">
+                        <div id="escolhas" class="escolhasPlayers text-white ">
+                            <!-- //* Adicionar cartas escolhidas -->
+                        </div>
+                        <div class="cartas text-white text-center">
+                            <p id="numPergunta">PERGUNTA 1</p>
+                            <p id="question">Qual será a resposta?</p>
+                        </div>
+                        <div id="Rodada" class="text-white ">
+                            <!-- <p>Rodada 1</p> -->
+                            <p>Pontuação:</p>
+                            <div id="jogadoresOnline" >
+                                <!-- <h5 class="textoJogadoresOn">Pedro: 1</h5>-->
+                                <!-- //!adicionar todos os jogadores dinamicamente -->
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <br>
 
-        </div>
-        <div>
-            <p>Qual seu nick</p>
-            <input id="nomePlayer" type="text">
-            <!-- <button>Começar</button> -->
-            <p id="Rules" class="cursorPointer margin10Top" data-toggle="modal" >Ler as Regras
-                <svg width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
-                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-                    <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
-                  </svg>
-            </p>
+                    <!-- <p class="text-center text-white">SUAS RESPOSTAS</p> -->
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >SUAS RESPOSTAS</p>
+                            </div>
+                            <div class="col text-left">
+                                <button>Encerrar Rodada</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="resposta" class="row">
+                        <!-- <div class="cartas text-white  cursorPointer" codigo="1">
+                            <div class="carta-content answer">Tamanho da carta</div>
+                        </div>
+                        <div class="cartas text-white  cursorPointer" codigo="2">
+                            <div class="carta-content answer">Avada Kadavra</div>
+                        </div> -->
+                    </div>
 
-            <!-- <p>Algumas descrições</p> -->
-            
-        </div>
-        <div >
-            <p>Criar uma sala</p>
-            <div id="criarSala" style="border: solid 1px white; height: 80vh; width: 50vh">
-                
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade-in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Regras</h5>
-                    <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Descrição das regras.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- //! MODAL CONFIRMAR 18 ANOS -->
-    <div class="modal fade-in" id="modalIdade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: red;">
-                    <h5 class="modal-title" id="myModalLabel" style="color:white">Parado aí</h5>
-                  </div>
-                <div class="modal-body">
-                    <p id="mensagemConfirmacao" contador=0> Voce tem mais de 18?</p>
-                </div>
-  
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary confirmarIdade" data-dismiss="modal">Corfirmo</button>
-                    <button type="button" class="btn btn-secondary recusarIdade" data-dismiss="modal">Não</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="assets/js/entrar.js"></script>
+    <!-- //! SCRIPT CLIENT -->
+    <script src="assets/js/index.js"></script>
 </body>
-
 </html>

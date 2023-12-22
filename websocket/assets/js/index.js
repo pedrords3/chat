@@ -5,12 +5,24 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
     let username = sessionStorage.getItem('username') || ''; //* Obter o nome de usuário armazenado na sessionStorage
     let lastPageReloadTime = parseInt(sessionStorage.getItem('lastPageReloadTime')) || 0; //* Obter o último tempo de recarregamento da página
 
+    //!Add Load
+    $("#loader").addClass("d-flex");
+    $("#loader").css("display","block");
+    $("#TextoLoad").text("Carregando Chat");
+
     //*  Event listener para quando a conexão é aberta
     socket.addEventListener('open', (event) => {
         console.log('Conectado ao servidor WebSocket');
+        //! Remover Load
+        $("#loader").css("display","none");
+    	$("#loader").removeClass("d-flex"); 
+
+        var url = new URL(window.location.href);
 
         // Lógica para permitir que o cliente escolha ou crie uma sala
-        const escolherSala = prompt('Digite o ID da sala para entrar ou deixe em branco para criar uma nova sala:');
+        // const escolherSala = prompt('Digite o ID da sala para entrar ou deixe em branco para criar uma nova sala:');
+        const escolherSala = url.searchParams.get('Sala');
+        // alert(escolherSala);
         if (escolherSala) {
             socket.send(JSON.stringify({ type: 'joinSala', salaId: escolherSala }));
         } else {
@@ -19,8 +31,20 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         
         //* Se o nome de usuário ainda não estiver definido, solicitar e definir o nome de usuário
         if (!username) {
-            username = prompt('Digite seu nome de usuário:');
+            // username = prompt('Digite seu nome de usuário:');
+            console.log(username);
+            // Obter a URL atual
+            
+            // Obter o valor do parâmetro 'User'
+            username = url.searchParams.get('User');
             sessionStorage.setItem('username', username); //* Armazenar o nome de usuário na sessionStorage
+
+            url.searchParams.delete('User');
+            url.searchParams.delete('Sala');
+
+            // Atualizar a URL no histórico do navegador
+            history.replaceState(null, '', url.href);
+
         }
 
         //* Enviar mensagem de entrada para o servidor
@@ -112,7 +136,11 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             const numRodada = document.getElementById('numPergunta');
             numRodada.innerText = "PERGUNTA "+ rodadaAtual;
 
-        }
+        }else if (messageType === 'erroSala') {
+            console.log("Sala não encontrada");
+         }else if (messageType === 'salaCriada') {
+            alert("Bem vindo a sala: "+messageText);
+         }
 
         chatDiv.scrollTop = chatDiv.scrollHeight;
     });

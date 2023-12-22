@@ -178,6 +178,18 @@ body{
     overflow-y: scroll;
 }
 
+.margin10Top{
+    margin-top:10px;
+}
+
+#loader {
+    position: fixed;
+    width: 70px;
+    height: 70px;
+    z-index: 99999;
+}
+
+
 /*//! Adapte as configurações conforme necessário para diferentes tamanhos de tela usando media queries */
 
 @media (max-width: 600px) {
@@ -185,5 +197,60 @@ body{
         width: 100%;
         max-width: none;
         margin-bottom: 10px;
+    }
+}
+
+
+/* Adicione esta classe para aplicar a animação de fade no modal */
+.fade-in {
+    animation: fadeIn ease 0.5s;
+    -webkit-animation: fadeIn ease 0.5s;
+    -moz-animation: fadeIn ease 0.5s;
+    -o-animation: fadeIn ease 0.5s;
+    -ms-animation: fadeIn ease 0.5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
