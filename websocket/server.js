@@ -10,6 +10,8 @@ const perguntas = require("./perguntas");
 dotenv.config()
 const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
+const salas = new Map(); //* Mapa de salas (id da sala -> array de clientes)
+
 //TODO-----------SISTEMA DE PERGUNTAS--------------------------------
 let rodadaAtual = 0;
 let perguntaAtual;
