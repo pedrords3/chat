@@ -139,7 +139,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         }else if (messageType === 'erroSala') {
             console.log("Sala não encontrada");
          }else if (messageType === 'salaCriada') {
-            alert("Bem vindo a sala: "+messageText);
+            console.log("Bem vindo a sala: "+messageText);
          }
 
         chatDiv.scrollTop = chatDiv.scrollHeight;
