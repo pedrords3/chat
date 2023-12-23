@@ -62,6 +62,23 @@
     border-radius: 5px;
 }
 
+.cartas::-webkit-scrollbar {
+    width: 5px; /* //* Largura da barra de rolagem */
+}
+
+.cartas::-webkit-scrollbar-thumb {
+    background-color: #888; /* //*Cor da barra de rolagem */
+    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
+}
+/* //*Estilos para o Internet Explorer */
+.cartas::-ms-scrollbar {
+    width: 5px;
+}
+.cartas::-ms-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
 #messageInput {
     height: auto;
     width: 90%;
@@ -134,6 +151,8 @@ body{
     margin: 5px 1%;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    font-size: 12px;
 }
 .carta-content {
     flex-grow: 1;
