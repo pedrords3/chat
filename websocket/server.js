@@ -71,8 +71,7 @@ server.on('connection', (socket) => {
                 // sequenciaIds.push(idUsuario);
                 
                 console.log("Id Usuario "+idUsuario);
-                // usuariosOnline.set(socket, { id: idUsuario, nome: usuario });
-                usuariosOnline.set(idUsuario, { id: idUsuario, nome: usuario });
+                // usuariosOnline.set(socket, { id: idUsuario, nome: usuario }); //? erro
 
                 //* Enviar mensagem de entrada para o novo cliente
                 //? PEGAR E PASSAR O ID DO USUARIO
