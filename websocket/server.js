@@ -19,18 +19,8 @@ let perguntaAtual;
 function iniciarNovaRodada() {
     rodadaAtual++;
     perguntaAtual = obterPerguntaAleatoria();
-
-    //* Obter o próximo ID na sequência para ser o host
-    const proximoHostId = sequenciaIds.shift();
-    sequenciaIds.push(proximoHostId);
-
-    enviarNovaRodadaParaClientes(proximoHostId);
+    enviarNovaRodadaParaClientes();
 }
-// function iniciarNovaRodada() {
-//     rodadaAtual++;
-//     perguntaAtual = obterPerguntaAleatoria();
-//     enviarNovaRodadaParaClientes();
-// }
 
 function obterPerguntaAleatoria() {
     // Lógica para obter uma pergunta aleatória sem repetição
@@ -40,14 +30,13 @@ function obterPerguntaAleatoria() {
     return perguntasEmbaralhadas[0];
 }
 
-function enviarNovaRodadaParaClientes(hostId) {
+function enviarNovaRodadaParaClientes() {
     const mensagemNovaRodada = {
         type: 'novaRodada',
         data: {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
             // opcoes: perguntaAtual.opcoes,
-            host: hostId,
         },
     };
 
@@ -61,13 +50,12 @@ function enviarNovaRodadaParaClientes(hostId) {
 
 //TODO---------------↑↑↑----------------------------
 
-// const usuariosOnline = new Set();
-const usuariosOnline = new Map();
+const usuariosOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
 var idUsuario = 0;
-let sequenciaIds = [];
+var ArrayUsuarios = [];
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -105,10 +93,8 @@ server.on('connection', (socket) => {
                 console.log(`Usuário definido como: ${usuario}`);
                 
                 idUsuario++;
-                sequenciaIds.push(idUsuario);
-
+                
                 console.log("Id Usuario "+idUsuario);
-                usuariosOnline.set(socket, { id: idUsuario, nome: usuario }); // Armazenar o ID do usuário
                 //* Enviar mensagem de entrada para o novo cliente
                 //? PEGAR E PASSAR O ID DO USUARIO
                 const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: idUsuario };
@@ -210,9 +196,6 @@ server.on('connection', (socket) => {
     //* Event listener para fechar a conexão
     socket.on('close', () => {
         console.log('Cliente desconectado');
-
-        const userData = usuariosOnline.get(socket);
-        const usuario = userData ? userData.nome : '';
         const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
     
         //* Remover o usuário da lista de usuários online
