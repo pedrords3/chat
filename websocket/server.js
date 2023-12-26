@@ -6,7 +6,6 @@ const WebSocket = require('ws');
 const {WebSocketServer} = require("ws");
 const dotenv = require("dotenv");
 const perguntas = require("./perguntas");
-const { v4: uuidv4 } = require('uuid');
 
 dotenv.config()
 const server = new WebSocketServer({port: process.env.PORT || 8080 })
@@ -14,8 +13,7 @@ const server = new WebSocketServer({port: process.env.PORT || 8080 })
 const salas = new Map(); //* Mapa de salas (id da sala -> array de clientes)
 
 
-// const usuariosOnline = new Set();
-const usuariosOnline = new Map();
+const usuariosOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
@@ -50,15 +48,6 @@ server.on('connection', (socket) => {
             if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 usuario = data.sender;
-
-                // Recupere o ID do usuário do localStorage, se existir
-                // let idUsuario = localStorage.getItem('idUsuario');
-                // if (!idUsuario) {
-                    // Se o ID não existir, crie um novo e armazene no localStorage
-                    let idUsuario = gerarNovoIdUsuario(); // Usando a função para gerar um novo ID de usuário
-                    sequenciaIds.push(idUsuario);
-                    // localStorage.setItem('idUsuario', idUsuario);
-                // }
                 
                 if (!usuariosOnline.has(usuario)) {
                     quantidadeUsuariosOnline++;
@@ -67,12 +56,9 @@ server.on('connection', (socket) => {
                 
                 console.log(`Usuário definido como: ${usuario}`);
                 
-                // idUsuario++;
-                // sequenciaIds.push(idUsuario);
+                idUsuario++;
                 
                 console.log("Id Usuario "+idUsuario);
-                // usuariosOnline.set(socket, { id: idUsuario, nome: usuario }); //? erro
-
                 //* Enviar mensagem de entrada para o novo cliente
                 //? PEGAR E PASSAR O ID DO USUARIO
                 const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: idUsuario };
@@ -271,8 +257,3 @@ function enviarNovaRodadaParaClientes(hostId) {
 }
 
 //TODO---------------↑↑↑----------------------------
-
-// function gerarNovoIdUsuario() {
-//     // Lógica para gerar um novo ID de usuário (pode ser um UUID ou algo semelhante)
-//     // Certifique-se de implementar uma lógica robusta para evitar colisões de IDs
-// }
