@@ -91,6 +91,7 @@ server.on('connection', (socket) => {
                 console.log(`Usuário definido como: ${usuario}`);
                 
                 //* Enviar mensagem de entrada para o novo cliente
+                //? PEGAR E PASSAR O ID DO USUARIO
                 const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: '' };
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
@@ -143,8 +144,10 @@ server.on('connection', (socket) => {
                 broadcastQuantidadeUsuariosOnline();
                 socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }
-            else if (data.type === 'host') {
+            else if (data.type === 'hostDefinido') {
                 console.log("Host definido: "+data.nomeuser);
+            }else if(data.type === 'iniciarRodada'){
+                iniciarNovaRodada();
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
@@ -211,7 +214,7 @@ server.on('connection', (socket) => {
         }
 
     });
-    iniciarNovaRodada();
+    // iniciarNovaRodada(); // INICIANDO SEMPRE QUE ALGUEM NOVO USUARIO ENTRA OU ATIVA NO SERVIDOR
 });
 
 //* Entrar em uma sala existente
