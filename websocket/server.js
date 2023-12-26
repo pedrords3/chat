@@ -97,11 +97,11 @@ server.on('connection', (socket) => {
                 idUsuario++;
                 ArrayNomeUser.push(usuario);
                 ArrayId.push(idUsuario);
-                for(let i = 0; i < idUsuario.length; i++){
-                    ArrayUsuarios=[{
+                for (let i = 0; i < usuario.length; i++) {
+                    ArrayUsuarios.push({
                         id: idUsuario[i],
                         nome: usuario[i]
-                    }]
+                    });
                 }
                 console.log("Id Usuario "+idUsuario);
                 //* Enviar mensagem de entrada para o novo cliente
