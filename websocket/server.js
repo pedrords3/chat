@@ -12,43 +12,6 @@ const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
 const salas = new Map(); //* Mapa de salas (id da sala -> array de clientes)
 
-//TODO-----------SISTEMA DE PERGUNTAS--------------------------------
-let rodadaAtual = 0;
-let perguntaAtual;
-
-function iniciarNovaRodada() {
-    rodadaAtual++;
-    perguntaAtual = obterPerguntaAleatoria();
-    enviarNovaRodadaParaClientes();
-}
-
-function obterPerguntaAleatoria() {
-    // Lógica para obter uma pergunta aleatória sem repetição
-    // Certifique-se de implementar a lógica para evitar repetição de perguntas
-    // Array shuffle para obter uma pergunta aleatória
-    const perguntasEmbaralhadas = perguntas.slice().sort(() => Math.random() - 0.5);
-    return perguntasEmbaralhadas[0];
-}
-
-function enviarNovaRodadaParaClientes() {
-    const mensagemNovaRodada = {
-        type: 'novaRodada',
-        data: {
-            rodada: rodadaAtual,
-            pergunta: perguntaAtual.pergunta,
-            // opcoes: perguntaAtual.opcoes,
-        },
-    };
-
-    //* Enviar mensagem para todos os clientes
-    server.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(mensagemNovaRodada));
-        }
-    });
-}
-
-//TODO---------------↑↑↑----------------------------
 
 const usuariosOnline = new Set();
 
@@ -56,6 +19,7 @@ let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
 var idUsuario = 0;
 var ArrayUsuarios = [];
+let sequenciaIds = [];
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -93,8 +57,11 @@ server.on('connection', (socket) => {
                 console.log(`Usuário definido como: ${usuario}`);
                 
                 idUsuario++;
+                sequenciaIds.push(idUsuario);
                 
                 console.log("Id Usuario "+idUsuario);
+                usuariosOnline.set(socket, { id: idUsuario, nome: usuario });
+
                 //* Enviar mensagem de entrada para o novo cliente
                 //? PEGAR E PASSAR O ID DO USUARIO
                 const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: idUsuario };
@@ -249,3 +216,47 @@ function gerarSalaId() {
     // Certifique-se de implementar uma lógica robusta para evitar colisões de IDs
 }
 
+
+//TODO-----------SISTEMA DE PERGUNTAS E RODADAS--------------------------------
+let rodadaAtual = 0;
+let perguntaAtual;
+
+function iniciarNovaRodada() {
+    rodadaAtual++;
+    perguntaAtual = obterPerguntaAleatoria();
+     //* Obter o próximo ID na sequência para ser o host
+     const proximoHostId = sequenciaIds.shift();
+     sequenciaIds.push(proximoHostId);
+ 
+     enviarNovaRodadaParaClientes(proximoHostId);
+    
+}
+
+function obterPerguntaAleatoria() {
+    // Lógica para obter uma pergunta aleatória sem repetição
+    // Certifique-se de implementar a lógica para evitar repetição de perguntas
+    // Array shuffle para obter uma pergunta aleatória
+    const perguntasEmbaralhadas = perguntas.slice().sort(() => Math.random() - 0.5);
+    return perguntasEmbaralhadas[0];
+}
+
+function enviarNovaRodadaParaClientes(hostId) {
+    const mensagemNovaRodada = {
+        type: 'novaRodada',
+        data: {
+            rodada: rodadaAtual,
+            pergunta: perguntaAtual.pergunta,
+            // opcoes: perguntaAtual.opcoes,
+            host: hostId
+        },
+    };
+
+    //* Enviar mensagem para todos os clientes
+    server.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(mensagemNovaRodada));
+        }
+    });
+}
+
+//TODO---------------↑↑↑----------------------------
