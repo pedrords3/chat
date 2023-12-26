@@ -52,13 +52,13 @@ server.on('connection', (socket) => {
                 usuario = data.sender;
 
                 // Recupere o ID do usuário do localStorage, se existir
-                let idUsuario = localStorage.getItem('idUsuario');
-                if (!idUsuario) {
+                // let idUsuario = localStorage.getItem('idUsuario');
+                // if (!idUsuario) {
                     // Se o ID não existir, crie um novo e armazene no localStorage
-                    idUsuario = gerarNovoIdUsuario(); // Usando a função para gerar um novo ID de usuário
+                    let idUsuario = gerarNovoIdUsuario(); // Usando a função para gerar um novo ID de usuário
                     sequenciaIds.push(idUsuario);
-                    localStorage.setItem('idUsuario', idUsuario);
-                }
+                    // localStorage.setItem('idUsuario', idUsuario);
+                // }
                 
                 if (!usuariosOnline.has(usuario)) {
                     quantidadeUsuariosOnline++;
