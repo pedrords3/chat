@@ -224,6 +224,7 @@ function iniciarNovaRodada() {
     perguntaAtual = obterPerguntaAleatoria();
      //* Obter o próximo ID na sequência para ser o host
      const proximoHostId = sequenciaIds.shift();
+     console.log("----------> "+proximoHostId);
      sequenciaIds.push(proximoHostId);
  
      enviarNovaRodadaParaClientes(proximoHostId);
