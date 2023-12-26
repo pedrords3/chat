@@ -143,6 +143,9 @@ server.on('connection', (socket) => {
                 broadcastQuantidadeUsuariosOnline();
                 socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }
+            else if (data.type === 'host') {
+                console.log("Host definido: "+data.nomeuser);
+            }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
         }
