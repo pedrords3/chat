@@ -91,7 +91,7 @@ server.on('connection', (socket) => {
                 console.log(`Usuário definido como: ${usuario}`);
                 
                 //* Enviar mensagem de entrada para o novo cliente
-                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario };
+                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: '' };
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(enterMessage));
