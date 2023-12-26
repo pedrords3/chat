@@ -54,6 +54,10 @@ const usuariosOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
+var idUsuario = 0;
+var ArrayNomeUser = [];
+var ArrayId = [];
+var ArrayUsuarios = [];
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -90,9 +94,26 @@ server.on('connection', (socket) => {
                 
                 console.log(`Usuário definido como: ${usuario}`);
                 
+                idUsuario++;
+                ArrayNomeUser.push(usuario);
+                ArrayId.push(idUsuario);
+                for(let i = 0; i < idUsuario.length; i++){
+                    ArrayUsuarios=[{
+                        id: idUsuario[i],
+                        nome: usuario[i]
+                    }]
+                }
+                console.log("Id Usuario "+idUsuario);
                 //* Enviar mensagem de entrada para o novo cliente
                 //? PEGAR E PASSAR O ID DO USUARIO
-                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: '' };
+                const enterMessage = { 
+                    type: 'enter', 
+                    data: 'Entrou no chat', 
+                    sender: usuario, 
+                    qtdusuarios: quantidadeUsuariosOnline,
+                    iduser: idUsuario,
+                    dadosUsuarios: ArrayUsuarios
+                };
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(enterMessage));
