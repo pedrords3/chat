@@ -115,7 +115,8 @@ server.on('connection', (socket) => {
             }
             else if (data.type === 'hostDefinido') {
                 console.log("Host definido: "+data.nomeuser);
-            }else if(data.type === 'iniciarRodada'){
+            // }else if(data.type === 'iniciarRodada'){
+            }else if(data.type === 'novaRodada'){
                 iniciarNovaRodada();
             }
         } catch (error) {
