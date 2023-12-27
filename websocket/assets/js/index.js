@@ -119,7 +119,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             DesabilitarCartas();
             if(quantidadeUsuarios == 1){
                 console.log("O host é: "+senderName+ " com id: "+idUsu);
-                $("#iniciarPartida").css("display","block");
+                // $("#iniciarPartida").css("display","block");
                 //! enviar para o servidor, nome do host
                 // socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: idUsu }));
 
@@ -197,6 +197,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             if(idUser == idHost){ // voltaaqui
                 console.log("você é o host: "+idHost);//* Se for o host
                 $("#iniciarPartida").css("display","block");
+                DesabilitarCartasCartas();
 
             }else{
                 HabilitarCartas(); //* Se não for o host
