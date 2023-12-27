@@ -76,7 +76,7 @@ server.on('connection', (socket) => {
                 broadcastUsuariosOnline();
                  
                 //* Enviar quantidade atualizada de usuários online para o cliente que acabou de se conectar
-                socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
+                // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
 
             } else if (data.type === 'message') {
                 console.log(`Recebido de ${data.sender}: ${data.data}`);
@@ -118,7 +118,6 @@ server.on('connection', (socket) => {
                 broadcastUsuariosOnline();
                 // broadcastQuantidadeUsuariosOnline();
                 // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
-                // socket.send(JSON.stringify({ type: 'usuariosOnline', qtdUsuarios: quantidadeUsuariosOnline }));
             }
             else if (data.type === 'hostDefinido') {
                 broadcastUsuariosOnline(); //?
@@ -133,14 +132,14 @@ server.on('connection', (socket) => {
 
     });
 
-    function broadcastQuantidadeUsuariosOnline() {
-        //* Enviar quantidade atualizada de usuários online para todos os clientes
-        server.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
-            }
-        });
-    }
+    // function broadcastQuantidadeUsuariosOnline() {
+    //     //* Enviar quantidade atualizada de usuários online para todos os clientes
+    //     server.clients.forEach((client) => {
+    //         if (client.readyState === WebSocket.OPEN) {
+    //             client.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
+    //         }
+    //     });
+    // }
 
     function broadcastUsuariosOnline() {
         const usuariosArray = Array.from(usuariosOnline);
