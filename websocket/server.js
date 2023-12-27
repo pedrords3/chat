@@ -19,8 +19,6 @@ let quantidadeUsuariosOnline = 0;
 var idUsuario = 0;
 let sequenciaIds = [];
 // let MaxPlayer = [1,2,3,4,5,6,7,8,9,10]; //* numero maximo de jogadores é 10
-let sequenciaHosts = [];
-let posicaoHostAtual = 0;
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -42,11 +40,6 @@ server.on('connection', (socket) => {
             if (data.type === 'joinSala') {
                 const salaId = data.salaId;
                 entrarNaSala(socket, salaId);
-
-                //* Adicione o ID do usuário à sequência de hosts se ainda não estiver presente
-                if (!sequenciaHosts.includes(data.iduser)) {
-                    sequenciaHosts.push(data.iduser);
-                }
             } else if (data.type === 'criarSala') {
                 criarSala(socket);
             }
@@ -173,19 +166,12 @@ server.on('connection', (socket) => {
         if (usuariosOnline.has(usuario)) {
             usuariosOnline.delete(usuario);
             quantidadeUsuariosOnline--;
-
-            //* Remova o ID do usuário da sequência de hosts
-            const indexToRemove = sequenciaHosts.indexOf(data.iduser);
-            if (indexToRemove !== -1) {
-                sequenciaHosts.splice(indexToRemove, 1);
-            }
     
             //* Enviar lista atualizada de usuários online para todos os clientes
             broadcastUsuariosOnline();
             broadcastQuantidadeUsuariosOnline();
     
             const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }; //* Atualiza quantidade de jogadores online
-            
             //* Enviar mensagem de saída para os outros clientes
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === WebSocket.OPEN) {
@@ -217,13 +203,8 @@ function criarSala(socket) {
     const novaSalaId = gerarSalaId(); // Implemente a geração de IDs de sala
     const novaSala = [socket];
     salas.set(novaSalaId, novaSala);
-
-    //* Inicialize a sequência de hosts com os IDs dos usuários na sala
-    sequenciaHosts = Array.from(salas.get(novaSalaId), clientSocket => clientSocket.id);
-
     //? Adicione mais lógica conforme necessário (como notificar outros clientes da nova sala)
     socket.send(JSON.stringify({ type: 'salaCriada', data: { salaId: novaSalaId } }));
-    
 }
 
 //* Gerar um ID de sala único
@@ -242,17 +223,12 @@ let perguntaAtual;
 function iniciarNovaRodada() {
     rodadaAtual++;
     perguntaAtual = obterPerguntaAleatoria();
-    //* Obter o próximo ID na sequência para ser o host
-    // const proximoHostId = sequenciaIds.shift();
-    // enviarNovaRodadaParaClientes(proximoHostId);
-
-    //* Selecionar o próximo host da sequência
-    const proximoHostId = sequenciaHosts[posicaoHostAtual];
-    posicaoHostAtual = (posicaoHostAtual + 1) % sequenciaHosts.length;
-    console.log("----------> "+proximoHostId);
-    
-    sequenciaIds.push(proximoHostId);
-    enviarNovaRodadaParaClientes(proximoHostId);
+     //* Obter o próximo ID na sequência para ser o host
+     const proximoHostId = sequenciaIds.shift();
+     console.log("----------> "+proximoHostId);
+     sequenciaIds.push(proximoHostId);
+ 
+     enviarNovaRodadaParaClientes(proximoHostId);
     
 }
 
@@ -271,8 +247,8 @@ function enviarNovaRodadaParaClientes(hostId) {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
             // opcoes: perguntaAtual.opcoes,
-            host: hostId
-            // host: 100
+            // host: hostId
+            host: 100
         },
     };
 
