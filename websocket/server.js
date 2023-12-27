@@ -232,13 +232,20 @@ function gerarSalaId() {
 //TODO-----------SISTEMA DE PERGUNTAS E RODADAS--------------------------------
 let rodadaAtual = 0;
 let perguntaAtual;
+let contadorPlayers = -1;
 
 function iniciarNovaRodada() {
     rodadaAtual++;
+    contadorPlayers++
     perguntaAtual = obterPerguntaAleatoria();
-     //* Obter o próximo ID na sequência para ser o host
-    //  const proximoHostId = sequenciaIds.shift();
-    const proximoHostId = ArrayPlayers[rodadaAtual-1]; //voltaaqui
+    
+    
+    //! Se contador de jogadores for maior ou igual ao array de player o contador zera novamente
+    if(contadorPlayers >= ArrayPlayers.length){
+        contadorPlayers = -1;
+    }
+    //* Obter o próximo ID na sequência para ser o host
+    const proximoHostId = ArrayPlayers[contadorPlayers]; 
 
      console.log("----------> "+proximoHostId);
      sequenciaIds.push(proximoHostId);
