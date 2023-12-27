@@ -40,7 +40,11 @@ server.on('connection', (socket) => {
             if (data.type === 'joinSala') {
                 const salaId = data.salaId;
                 // entrarNaSala(socket, salaId);
-                client.send(JSON.stringify({ type: 'salaCriada', data: salaId }));
+                server.clients.forEach((client) => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(JSON.stringify({ type: 'salaCriada', data: salaId }));
+                    }
+                });
 
             } 
             // else if (data.type === 'criarSala') {
@@ -112,8 +116,9 @@ server.on('connection', (socket) => {
 
                 //* Enviar lista atualizada de usuários online para todos os clientes
                 broadcastUsuariosOnline();
-                broadcastQuantidadeUsuariosOnline();
-                socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
+                // broadcastQuantidadeUsuariosOnline();
+                // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
+                // socket.send(JSON.stringify({ type: 'usuariosOnline', qtdUsuarios: quantidadeUsuariosOnline }));
             }
             else if (data.type === 'hostDefinido') {
                 broadcastUsuariosOnline(); //?
@@ -139,7 +144,7 @@ server.on('connection', (socket) => {
 
     function broadcastUsuariosOnline() {
         const usuariosArray = Array.from(usuariosOnline);
-        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray };
+        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline };
 
         //* Enviar lista atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
@@ -173,7 +178,7 @@ server.on('connection', (socket) => {
     
             //* Enviar lista atualizada de usuários online para todos os clientes
             broadcastUsuariosOnline();
-            broadcastQuantidadeUsuariosOnline();
+            // broadcastQuantidadeUsuariosOnline();
     
             const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }; //* Atualiza quantidade de jogadores online
             //* Enviar mensagem de saída para os outros clientes
