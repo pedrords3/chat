@@ -6,6 +6,8 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
     let lastPageReloadTime = parseInt(sessionStorage.getItem('lastPageReloadTime')) || 0; //* Obter o último tempo de recarregamento da página
     
 
+    var idUser = '';
+    var ArrayPlayers = [];
     //!Add Load
     $("#loader").addClass("d-flex");
     $("#loader").css("display","block");
@@ -23,13 +25,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         // Lógica para permitir que o cliente escolha ou crie uma sala
         // const escolherSala = prompt('Digite o ID da sala para entrar ou deixe em branco para criar uma nova sala:');
         let escolherSala = url.searchParams.get('Sala');
-        
-        // if (escolherSala) {
-        //     socket.send(JSON.stringify({ type: 'joinSala', salaId: escolherSala }));
-        // } else {
-        //     escolherSala = sessionStorage.getItem('salaId');
-        //     socket.send(JSON.stringify({ type: 'criarSala' }));
-        // }
+
         if (!escolherSala) { //* Recarregou pagina e nao tem mais na url
             escolherSala = sessionStorage.getItem('salaId');
         }else{ //* Pegou id pela url 1ª vez
@@ -38,26 +34,50 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         console.log("Nº da sala "+escolherSala);
         socket.send(JSON.stringify({ type: 'joinSala', salaId: escolherSala }));
         
-        //* Se o nome de usuário ainda não estiver definido, solicitar e definir o nome de usuário
+        //* Se o nome de usuário ainda não estiver definido - pega da url
         if (!username) {
-            // username = prompt('Digite seu nome de usuário:');
-            console.log("Nome usuario: "+username);
-            // Obter a URL atual
-            
+            // username = prompt('Digite seu nome de usuário:');           
             // Obter o valor do parâmetro 'User'
             username = url.searchParams.get('User');
+            console.log("Nome usuario: "+username);
             sessionStorage.setItem('username', username); //* Armazenar o nome de usuário na sessionStorage
             
-            url.searchParams.delete('User');
-            url.searchParams.delete('Sala');
+            url.searchParams.delete('User'); //* Pega nome do usuario da url
+            url.searchParams.delete('Sala'); //* Pega numero da sala da url
 
-            // Atualizar a URL no histórico do navegador
+            //* Atualizar a URL no histórico do navegador
             history.replaceState(null, '', url.href);
+
+            // Criar uma nova instância do objeto Date
+            const dataAtual = new Date();
+            // Obter os componentes da data e hora
+            const ano = dataAtual.getFullYear();
+            const mes = dataAtual.getMonth() + 1; // Os meses são zero-indexed (janeiro é 0)
+            const dia = dataAtual.getDate();
+            const hora = dataAtual.getHours();
+            const minutos = dataAtual.getMinutes();
+            const segundos = dataAtual.getSeconds();
+
+            // Exibir a data e hora atual
+            // console.log(`Data e Hora Atuais: ${ano}-${mes}-${dia} ${hora}:${minutos}:${segundos}`);
+            //! monta id do usuario que entrou (pela data e hora atual)
+            idUser = ano+mes+dia+hora+minutos+segundos;
+
+            // alert("idUsuario: "+idUser);
+
+            let dados = [{
+                jogador: username,
+                idjogador: idUser,
+            }]
+
+            ArrayPlayers.push(dados);
+            sessionStorage.setItem('listaJogadores', ArrayPlayers);
+            console.log(ArrayPlayers);
 
         }
 
         //* Enviar mensagem de entrada para o servidor
-        socket.send(JSON.stringify({ type: 'enter', sender: username }));
+        socket.send(JSON.stringify({ type: 'enter', sender: username, idusuario: idUser}));
 
         //! Cria cartas runtime
         console.log("Criando cartas");
@@ -84,23 +104,24 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
     
         const isCurrentUser = senderName === username;
     
-        console.log("↓");
-        console.log(messageType);
-        console.log("↑");
+        // console.log("↓");
+        // console.log(messageType);
+        // console.log("↑");
 
         if (messageType === 'enter' ) { //* Abrir
             chatDiv.innerHTML += `<p><strong>${senderName}:</strong> ${messageText}</p>`;
             console.log("RETORNO AO USUARIO ENTRAR");
             console.log(messageData);
-            const hostID = messageData.iduser; //? PEGAR O ID DO USUARIO QUE NÃO REPITA
+            const idUsu = messageData.iduser; //? PEGAR O ID DO USUARIO QUE NÃO REPITA
 
-            console.log("Id do Host: "+hostID);
+            console.log("Id do Usuario: "+idUsu);
+
             DesabilitarCartas();
             if(quantidadeUsuarios == 1){
-                console.log("Você é o host: "+senderName);
+                console.log("O host é: "+senderName+ " com id: "+idUsu);
                 $("#iniciarPartida").css("display","block");
                 //! enviar para o servidor, nome do host
-                socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: '' }));
+                socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: idUsu }));
 
             }
             // alert("Usuarios online: "+quantidadeUsuarios)
@@ -113,9 +134,12 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             //* Exibir resposta escolhida na div "escolhasPlayers"
             // escolhasPlayersDiv.innerHTML = escolhasPlayersDiv.innerHTML;
             // escolhasPlayersDiv.innerHTML += `<p>${senderName} escolheu: ${respostaText}</p>`;
+            console.log("RETORNO DA RESPOSTA -----");
+            console.log(messageData);
             let str = 
             `<div class="carta-resposta cursorPointer">
                 <p class="respostaSelecionada"> ${respostaText}</p>
+                <div class="escolherResposta">Escolher essa</div>
             </div>`
             escolhasPlayersDiv.innerHTML += str;
 
@@ -126,13 +150,22 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             const usuariosOnlineArray = messageData.data;
             const usuariosOnlineHTML = usuariosOnlineArray.map(user => `<h5 class="textoJogadoresOn">${user}</h5>`).join('');
             jogadoresOnlineDiv.innerHTML = usuariosOnlineHTML;
-
-        }else if (messageType === 'quantidadeUsuariosOnline') {//* Atualizar a quantidade de usuários online
-            const quantidadeUsuariosOnline = messageData.data;
+            const quantidadeUsuariosOnline = messageData.qtdUsuarios;
             quantidadeUsuariosOnlineSpan.innerText = quantidadeUsuariosOnline;
 
+            console.log("JOGADORES");
+            console.log(messageData);
+
+        }
+        else if (messageType === 'quantidadeUsuariosOnline') {//* Atualizar a quantidade de usuários online
+            const quantidadeUsuariosOnline = messageData.data;
+            quantidadeUsuariosOnlineSpan.innerText = quantidadeUsuariosOnline;
+            console.log("quantidade de jogadores");
+            console.log(messageData);
+
             
-        }else if (messageType === 'exit') {
+        }
+        else if (messageType === 'exit') {
             //* Remover o nome do jogador que saiu da página
             const jogadorSaiu = messageData.sender;
             const jogadoresOnlineDiv = document.getElementById('jogadoresOnline');
@@ -158,29 +191,29 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             const rodadaAtual = messageData.data.rodada;
             const pergunta = messageData.data.pergunta;
             // const opcoes = messageData.data.opcoes;
-            const host = messageData.data.host;
-
-            console.log("Quem deve ser o host: "+host);
-    
+            // const host = messageData.data.host;
+ 
             console.log(`Iniciando a rodada ${rodadaAtual}`);
-            // console.log(`Pergunta: ${pergunta}`);
-            // console.log(`Opções: ${opcoes.join(', ')}`);
+
+            //? So deve habilitar as cartas se não for o host
+            HabilitarCartas();
     
             // Implemente a lógica para exibir a pergunta e opções no cliente
             const perguntaRodada = document.getElementById('question');
             perguntaRodada.innerText = pergunta;
             const numRodada = document.getElementById('numPergunta');
             numRodada.innerText = "PERGUNTA "+ rodadaAtual;
+            
 
         }else if (messageType === 'erroSala') {
             console.log("Sala não encontrada");
+
          }else if (messageType === 'salaCriada') {
             console.log("Bem vindo a sala: "+messageText);
-         }else if(messageType === 'iniciarPartida'){
-            alert("Partida iniciada");
 
-         }else if(messageType === 'hostDefinido'){
-            console.log("Host confirmado: "+messageData);
+         }else if(messageType === 'iniciarPartida'){
+            console.log("Partida iniciada");
+
          }
 
 
@@ -197,7 +230,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         //* Verificar se a mensagem é uma resposta e estilizá-la de acordo
         const isAnswer = message.type === 'answer';
         const answerClass = isAnswer ? 'answerMessage' : '';
-    
+
         return `<p class="${messageClass} ${answerClass}"><span class="${usernameClass}">${message.sender}:</span> ${message.data}</p>`;
     }
     
@@ -288,7 +321,6 @@ function HabilitarCartas() {
 
 $("#iniciarPartida").on("click",function(){
     // alert("Partida iniciada");
-    HabilitarCartas()
     //! PRECISA: PEGAR TODOS OS JOGADORES ONLINES (NOME E ID) 
     //! ENVIAR PARA O SERVIDOR FAZER A SELEÇÃO DE HOSTS,
     //! TODO HOST DEVE TER O BOTÃO DE INICIAR A RODADA,
@@ -296,5 +328,27 @@ $("#iniciarPartida").on("click",function(){
 
     $("#iniciarPartida").css("display","none");
 
+    console.log("jogadores ao iniciar");
+
     socket.send(JSON.stringify({ type: 'novaRodada' })); //* Enviar comando para iniciar a rodada
 })
+
+$(".escolherResposta").on("click", function(){
+    console.log($(this));
+})
+
+
+
+//TODO -------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+
+- ID DE CADA USUARIO (não pode repetir, nem mudar) [✅]
+- SELECIONAR HOST []
+- TROCAR HOST APOS ENCERRAR A RODADA []
+- HOST NÃO PODE ENVIAR AS CARTAS DE RESPOSTAS []
+- HOST DEVE ESCOLHER A CARTA DE RESPOSTA []
+- CARTA DE RESPOSTA DEVE TER O ID DO USUARIO []
+- SISTEMA DE PONTUAÇÃO, AO ESCOLHER A CARTA DE RESPOSTA []
+
+*/
+//TODO -------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -18,7 +18,9 @@ let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
 var idUsuario = 0;
 let sequenciaIds = [];
-var ArrayIds = [];
+let idPlayer = 0;
+let ArrayPlayers = [];
+
 // let MaxPlayer = [1,2,3,4,5,6,7,8,9,10]; //* numero maximo de jogadores é 10
 
 server.on('connection', (socket) => {
@@ -55,7 +57,10 @@ server.on('connection', (socket) => {
             else if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 usuario = data.sender;        
-                let idPlayer = data.iduser;        
+                idPlayer = data.idusuario; 
+                
+                //* Guarda Id do usuario
+                ArrayPlayers.push(idPlayer);
 
                 if (!usuariosOnline.has(usuario)) {
                     quantidadeUsuariosOnline++;
@@ -115,18 +120,15 @@ server.on('connection', (socket) => {
                 quantidadeUsuariosOnline--;
 
                 usuariosOnline.delete(usuario);
+                ArrayPlayers.delete(idPlayer); //* remove id do jogador que saiu
 
                 //* Enviar lista atualizada de usuários online para todos os clientes
                 broadcastUsuariosOnline();
                 // broadcastQuantidadeUsuariosOnline();
                 // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
-            }
-            else if (data.type === 'hostDefinido') {
-                broadcastUsuariosOnline(); //?
-                console.log("Host definido: "+data.nomeuser);
-            // }else if(data.type === 'iniciarRodada'){
             }else if(data.type === 'novaRodada'){
                 iniciarNovaRodada();
+                
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
@@ -170,7 +172,7 @@ server.on('connection', (socket) => {
     //* Event listener para fechar a conexão
     socket.on('close', () => {
         console.log('Cliente desconectado');
-        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario };
+        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario, iduser: idPlayer };
     
         //* Remover o usuário da lista de usuários online
         if (usuariosOnline.has(usuario)) {

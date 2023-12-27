@@ -143,9 +143,12 @@ body{
 }
 
 .cartas {
-    width: 15%;
+    /* width: 15%;
     max-width: 150px;
-    height: 200px;
+    height: 200px; */
+    width: 12%;
+    max-width: 150px;
+    height: 130px;
     border: solid 1px rgb(172, 36, 172);
     border-radius: 5px;
     margin: 5px 1%;
@@ -173,7 +176,18 @@ body{
     border-radius: 5px;
     margin: 5px 1%;
     font-size: 11px;
+}
 
+.escolherResposta{
+    width: 100%;
+    height: 20px;
+    font-size: 9px;
+    margin-bottom: 0;
+    text-align: center;
+    border-radius: 5px;
+    background-color: white;
+    color:black;
+    
 }
 
 .answerMessage {
