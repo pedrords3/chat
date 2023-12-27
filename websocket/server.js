@@ -12,14 +12,13 @@ const server = new WebSocketServer({port: process.env.PORT || 8080 })
 
 const salas = new Map(); //* Mapa de salas (id da sala -> array de clientes)
 
-
 const usuariosOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
 var idUsuario = 0;
-var ArrayUsuarios = [];
 let sequenciaIds = [];
+let MaxPlayer = [1,2,3,4,5,6,7,8,9,10]; //* numero maximo de jogadores é 10
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -47,16 +46,16 @@ server.on('connection', (socket) => {
            
             if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
-                usuario = data.sender;
-                
+                usuario = data.sender;                
+
                 if (!usuariosOnline.has(usuario)) {
                     quantidadeUsuariosOnline++;
                     usuariosOnline.add(usuario);
+                    
+                    idUsuario++;
                 }
                 
                 console.log(`Usuário definido como: ${usuario}`);
-                
-                idUsuario++;
                 
                 console.log("Id Usuario "+idUsuario);
                 //* Enviar mensagem de entrada para o novo cliente
@@ -204,14 +203,16 @@ function criarSala(socket) {
     const novaSalaId = gerarSalaId(); // Implemente a geração de IDs de sala
     const novaSala = [socket];
     salas.set(novaSalaId, novaSala);
-    // Adicione mais lógica conforme necessário (como notificar outros clientes da nova sala)
+    //? Adicione mais lógica conforme necessário (como notificar outros clientes da nova sala)
     socket.send(JSON.stringify({ type: 'salaCriada', data: { salaId: novaSalaId } }));
 }
 
 //* Gerar um ID de sala único
 function gerarSalaId() {
-    // Lógica para gerar um ID único (pode ser um UUID ou algo semelhante)
-    // Certifique-se de implementar uma lógica robusta para evitar colisões de IDs
+    //* Gerar um ID único 
+    //? Certifique-se de implementar uma lógica robusta para evitar colisões de IDs
+
+    return 1;
 }
 
 
