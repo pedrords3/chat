@@ -39,12 +39,15 @@ server.on('connection', (socket) => {
             
             if (data.type === 'joinSala') {
                 const salaId = data.salaId;
-                entrarNaSala(socket, salaId);
-            } else if (data.type === 'criarSala') {
-                criarSala(socket);
-            }
+                // entrarNaSala(socket, salaId);
+                client.send(JSON.stringify({ type: 'salaCriada', data: salaId }));
+
+            } 
+            // else if (data.type === 'criarSala') {
+            //     criarSala(socket);
+            // }
            
-            if (data.type === 'enter' && !usuario) {
+            else if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 usuario = data.sender;                
 
@@ -113,6 +116,7 @@ server.on('connection', (socket) => {
                 socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }
             else if (data.type === 'hostDefinido') {
+                broadcastUsuariosOnline(); //?
                 console.log("Host definido: "+data.nomeuser);
             // }else if(data.type === 'iniciarRodada'){
             }else if(data.type === 'novaRodada'){
@@ -199,13 +203,13 @@ function entrarNaSala(socket, salaId) {
 }
 
 //* Cliente criar uma nova sala
-function criarSala(socket) {
-    const novaSalaId = gerarSalaId(); // Implemente a geração de IDs de sala
-    const novaSala = [socket];
-    salas.set(novaSalaId, novaSala);
-    //? Adicione mais lógica conforme necessário (como notificar outros clientes da nova sala)
-    socket.send(JSON.stringify({ type: 'salaCriada', data: { salaId: novaSalaId } }));
-}
+// function criarSala(socket) {
+//     const novaSalaId = gerarSalaId(); // Implemente a geração de IDs de sala
+//     const novaSala = [socket];
+//     salas.set(novaSalaId, novaSala);
+//     //? Adicione mais lógica conforme necessário (como notificar outros clientes da nova sala)
+//     socket.send(JSON.stringify({ type: 'salaCriada', data: { salaId: novaSalaId } }));
+// }
 
 //* Gerar um ID de sala único
 function gerarSalaId() {
