@@ -21,7 +21,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
     	$("#loader").removeClass("d-flex"); 
 
         var url = new URL(window.location.href);
-
+        
         // Lógica para permitir que o cliente escolha ou crie uma sala
         // const escolherSala = prompt('Digite o ID da sala para entrar ou deixe em branco para criar uma nova sala:');
         let escolherSala = url.searchParams.get('Sala');
@@ -121,7 +121,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
                 console.log("O host é: "+senderName+ " com id: "+idUsu);
                 $("#iniciarPartida").css("display","block");
                 //! enviar para o servidor, nome do host
-                socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: idUsu }));
+                // socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: idUsu }));
 
             }
             // alert("Usuarios online: "+quantidadeUsuarios)
@@ -134,12 +134,13 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             //* Exibir resposta escolhida na div "escolhasPlayers"
             // escolhasPlayersDiv.innerHTML = escolhasPlayersDiv.innerHTML;
             // escolhasPlayersDiv.innerHTML += `<p>${senderName} escolheu: ${respostaText}</p>`;
-            console.log("RETORNO DA RESPOSTA -----");
+            console.log("RETORNO DA RESPOSTA -----"); 
             console.log(messageData);
+            //? VERIFICAR SE PRECISA CRIPTOGRAFAR ID DO USUARIO
             let str = 
-            `<div class="carta-resposta cursorPointer">
+            `<div class="carta-resposta cursorPointer" onclick="responderPergunta(this)" idUsuario=${messageData.iduser}>
                 <p class="respostaSelecionada"> ${respostaText}</p>
-                <div class="escolherResposta">Escolher essa</div>
+                <div class="escolherResposta" >Escolher essa</div>
             </div>`
             escolhasPlayersDiv.innerHTML += str;
 
@@ -191,12 +192,21 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             const rodadaAtual = messageData.data.rodada;
             const pergunta = messageData.data.pergunta;
             // const opcoes = messageData.data.opcoes;
-            // const host = messageData.data.host;
+            const idHost = messageData.data.host;
+
+            if(idUser == idHost){ // voltaaqui
+                console.log("você é o host: "+idHost);//* Se for o host
+                $("#iniciarPartida").css("display","block");
+
+            }else{
+                HabilitarCartas(); //* Se não for o host
+                console.log("o Host é "+idHost);
+            }
  
             console.log(`Iniciando a rodada ${rodadaAtual}`);
 
             //? So deve habilitar as cartas se não for o host
-            HabilitarCartas();
+           
     
             // Implemente a lógica para exibir a pergunta e opções no cliente
             const perguntaRodada = document.getElementById('question');
@@ -278,7 +288,7 @@ document.addEventListener('click', (event) => {
     const selectedAnswer = event.target.closest('.answer');
     if (selectedAnswer) {
         const answerText = selectedAnswer.textContent.trim();
-        socket.send(JSON.stringify({ type: 'answer', data: 'Respondeu', sender: username, resposta: answerText }));
+        socket.send(JSON.stringify({ type: 'answer', data: 'Respondeu', sender: username, resposta: answerText, idusuario: idUser }));
         DesabilitarCartas(); //* ao responder, desabilita cartas voltaaqui
     }
     
@@ -333,9 +343,18 @@ $("#iniciarPartida").on("click",function(){
     socket.send(JSON.stringify({ type: 'novaRodada' })); //* Enviar comando para iniciar a rodada
 })
 
-$(".escolherResposta").on("click", function(){
-    console.log($(this));
-})
+function responderPergunta(element) {
+    var idUsuario = $(element).attr("idUsuario");
+    var textoParagrafo = $(element).find(".respostaSelecionada").text();
+
+    console.log("ID do Usuário:", idUsuario);
+    console.log("Texto do Parágrafo:", textoParagrafo);
+    alert("Ponto para: " + idUsuario);
+
+    //! Encerra a Rodada
+    socket.send(JSON.stringify({ type: 'novaRodada' }));
+    
+}
 
 
 
@@ -343,7 +362,7 @@ $(".escolherResposta").on("click", function(){
 /*
 
 - ID DE CADA USUARIO (não pode repetir, nem mudar) [✅]
-- SELECIONAR HOST []
+- SELECIONAR HOST [✅]
 - TROCAR HOST APOS ENCERRAR A RODADA []
 - HOST NÃO PODE ENVIAR AS CARTAS DE RESPOSTAS []
 - HOST DEVE ESCOLHER A CARTA DE RESPOSTA []
