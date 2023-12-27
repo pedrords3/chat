@@ -20,6 +20,7 @@ var idUsuario = 0;
 let sequenciaIds = [];
 let idPlayer = 0;
 let ArrayPlayers = [];
+let contagem = 0;
 
 // let MaxPlayer = [1,2,3,4,5,6,7,8,9,10]; //* numero maximo de jogadores é 10
 
@@ -55,7 +56,7 @@ server.on('connection', (socket) => {
             // }
            
             else if (data.type === 'enter' && !usuario) {
-                //* Se o tipo de mensagem for 'enter', definir o nome do usuário
+                //* Se o tipo de mensagem for 'enter', definir o nome do usuário, //? sequencia de host
                 usuario = data.sender;        
                 idPlayer = data.idusuario; 
                 
@@ -102,10 +103,10 @@ server.on('connection', (socket) => {
                 });
             }else if (data.type === 'answer') {
                 console.log(data);
-                console.log(`Resposta recebida de ${data.sender}: ${data.resposta}`);
+                console.log(`Resposta recebida de ${data.sender} - id = ${data.idusuario}: ${data.resposta}`);
     
                 //* Adicionar resposta ao log
-                logMessages.push({ sender: data.sender, data: data.data, resposta: data.resposta });
+                logMessages.push({ sender: data.sender, data: data.data, resposta: data.resposta, iduser: data.idusuario });
     
                 //* Imprimir o log de mensagens no console do servidor
                 console.log('Log de mensagens:', logMessages);
@@ -113,7 +114,7 @@ server.on('connection', (socket) => {
                 //* Transmissão da resposta para todos os clientes
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
-                        client.send(JSON.stringify({ type: 'answer', data: data.data, sender: data.sender, resposta: data.resposta }));
+                        client.send(JSON.stringify({ type: 'answer', data: data.data, sender: data.sender, resposta: data.resposta, iduser: data.idusuario }));
                     }
                 });
             }else if (data.type === 'exit') {
@@ -127,8 +128,8 @@ server.on('connection', (socket) => {
                 // broadcastQuantidadeUsuariosOnline();
                 // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }else if(data.type === 'novaRodada'){
-                iniciarNovaRodada();
-                
+                iniciarNovaRodada(); //* inicia proxima rodada, e define o id do host
+
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
@@ -236,7 +237,9 @@ function iniciarNovaRodada() {
     rodadaAtual++;
     perguntaAtual = obterPerguntaAleatoria();
      //* Obter o próximo ID na sequência para ser o host
-     const proximoHostId = sequenciaIds.shift();
+    //  const proximoHostId = sequenciaIds.shift();
+    const proximoHostId = ArrayPlayers[rodadaAtual-1]; //voltaaqui
+
      console.log("----------> "+proximoHostId);
      sequenciaIds.push(proximoHostId);
  
@@ -259,8 +262,8 @@ function enviarNovaRodadaParaClientes(hostId) {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
             // opcoes: perguntaAtual.opcoes,
-            // host: hostId
-            host: 100
+            host: hostId
+            // host: 100
         },
     };
 
