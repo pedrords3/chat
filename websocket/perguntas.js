@@ -1,14 +1,14 @@
 const perguntas = [
     {
-        pergunta: "Qual é a capital do Brasil?",
+        pergunta: "PERGUNTA TESTE 1 ___?",
         // opcoes: ["Rio de Janeiro", "Brasília", "São Paulo", "Salvador"],
         // resposta: "Brasília"
     },
     {
-        pergunta: "Nome do filme do ano?",
+        pergunta: "PERGUNTA TESTE 2 ____",
     },
     {
-        pergunta: "Pergunta pipipi popopo?",
+        pergunta: "PERGUNTA TESTE 3 ____",
     },
     {
         pergunta: "_____: TESTADO PELAS CRIANÇAS, APROVADO PELAS MÃES.",

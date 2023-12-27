@@ -18,6 +18,7 @@ let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
 var idUsuario = 0;
 let sequenciaIds = [];
+var ArrayIds = [];
 // let MaxPlayer = [1,2,3,4,5,6,7,8,9,10]; //* numero maximo de jogadores é 10
 
 server.on('connection', (socket) => {
@@ -53,7 +54,8 @@ server.on('connection', (socket) => {
            
             else if (data.type === 'enter' && !usuario) {
                 //* Se o tipo de mensagem for 'enter', definir o nome do usuário
-                usuario = data.sender;                
+                usuario = data.sender;        
+                let idPlayer = data.iduser;        
 
                 if (!usuariosOnline.has(usuario)) {
                     quantidadeUsuariosOnline++;
@@ -64,18 +66,18 @@ server.on('connection', (socket) => {
                 
                 console.log(`Usuário definido como: ${usuario}`);
                 
-                console.log("Id Usuario "+idUsuario);
+                console.log("Id Usuario "+idPlayer);
                 //* Enviar mensagem de entrada para o novo cliente
                 //? PEGAR E PASSAR O ID DO USUARIO
-                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: idUsuario };
+                const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: idPlayer };
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(enterMessage));
                     }
                 }); 
-                broadcastUsuariosOnline();
-                 
+                               
                 //* Enviar quantidade atualizada de usuários online para o cliente que acabou de se conectar
+                broadcastUsuariosOnline();
                 // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
 
             } else if (data.type === 'message') {
@@ -268,4 +270,7 @@ function enviarNovaRodadaParaClientes(hostId) {
     });
 }
 
+function defineIdUsuario(){
+
+}
 //TODO---------------↑↑↑----------------------------
