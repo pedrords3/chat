@@ -271,8 +271,8 @@ function enviarNovaRodadaParaClientes(hostId) {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
             // opcoes: perguntaAtual.opcoes,
-            // host: hostId
-            host: 100
+            host: hostId
+            // host: 100
         },
     };
 
