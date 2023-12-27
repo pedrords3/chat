@@ -180,13 +180,13 @@ server.on('connection', (socket) => {
             broadcastUsuariosOnline();
             // broadcastQuantidadeUsuariosOnline();
     
-            const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }; //* Atualiza quantidade de jogadores online
+            // const qtdUsuarios = { type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }; //* Atualiza quantidade de jogadores online
             //* Enviar mensagem de saída para os outros clientes
             server.clients.forEach((client) => {
                 if (client !== socket && client.readyState === WebSocket.OPEN) {
                     //*Envia retorno para o client
                     client.send(JSON.stringify(exitMessage));
-                    client.send(JSON.stringify(qtdUsuarios)); 
+                    // client.send(JSON.stringify(qtdUsuarios)); 
                 }
             });
         }
