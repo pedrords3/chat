@@ -130,6 +130,8 @@ server.on('connection', (socket) => {
             }else if(data.type === 'novaRodada'){
                 iniciarNovaRodada(); //* inicia proxima rodada, e define o id do host
 
+            }else if(data.type === 'finalizarRodada'){
+
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
@@ -236,22 +238,50 @@ let contadorPlayers = -1;
 
 function iniciarNovaRodada() {
     rodadaAtual++;
-    contadorPlayers++
+    // contadorPlayers++
     perguntaAtual = obterPerguntaAleatoria();
     
     
+    // //! Se contador de jogadores for maior ou igual ao array de player o contador zera novamente
+    // if(contadorPlayers >= ArrayPlayers.length){
+    //     contadorPlayers = -1;
+    // }
+    // //* Obter o próximo ID na sequência para ser o host
+    // const proximoHostId = ArrayPlayers[contadorPlayers]; 
+
+    //  console.log("----------> "+proximoHostId);
+    //  sequenciaIds.push(proximoHostId);
+ 
+    //  enviarNovaRodadaParaClientes(proximoHostId);
+     enviarNovaRodadaParaClientes();
+    
+}
+
+function finalizarRodada(){
+    //! Termina a rodada e pega o proximo host
+    contadorPlayers++;
     //! Se contador de jogadores for maior ou igual ao array de player o contador zera novamente
     if(contadorPlayers >= ArrayPlayers.length){
         contadorPlayers = -1;
     }
     //* Obter o próximo ID na sequência para ser o host
     const proximoHostId = ArrayPlayers[contadorPlayers]; 
+    sequenciaIds.push(proximoHostId);
 
-     console.log("----------> "+proximoHostId);
-     sequenciaIds.push(proximoHostId);
- 
-     enviarNovaRodadaParaClientes(proximoHostId);
-    
+    const mensagemNovaRodada = {
+        type: 'finalizarRodada',
+        data: {
+            host: proximoHostId
+        },
+    };
+
+    //* Enviar mensagem para todos os clientes
+    server.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(mensagemNovaRodada));
+        }
+    });
+
 }
 
 function obterPerguntaAleatoria() {
@@ -262,15 +292,15 @@ function obterPerguntaAleatoria() {
     return perguntasEmbaralhadas[0];
 }
 
-function enviarNovaRodadaParaClientes(hostId) {
+// function enviarNovaRodadaParaClientes(hostId) {
+function enviarNovaRodadaParaClientes() {
     const mensagemNovaRodada = {
         type: 'novaRodada',
         data: {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
             // opcoes: perguntaAtual.opcoes,
-            host: hostId
-            // host: 100
+            // host: hostId
         },
     };
 
