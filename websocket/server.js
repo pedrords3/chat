@@ -240,26 +240,15 @@ let contadorPlayers = 0;
 
 function iniciarNovaRodada(idHost) {
     rodadaAtual++;
-    // contadorPlayers++
     perguntaAtual = obterPerguntaAleatoria();
-    
-    
-    // //! Se contador de jogadores for maior ou igual ao array de player o contador zera novamente
-    // if(contadorPlayers >= ArrayPlayers.length){
-    //     contadorPlayers = -1;
-    // }
-    // //* Obter o próximo ID na sequência para ser o host
-    // const proximoHostId = ArrayPlayers[contadorPlayers]; 
 
-    //  console.log("----------> "+proximoHostId);
-    //  sequenciaIds.push(proximoHostId);
- 
-    //  enviarNovaRodadaParaClientes(proximoHostId);
-     enviarNovaRodadaParaClientes(idHost);
+    enviarNovaRodadaParaClientes(idHost);
     
 }
 
 function finalizarRodada(){
+    //! Termina a rodada e pega o proximo host
+    contadorPlayers++;
     
     //! Se contador de jogadores for maior ou igual ao array de player o contador zera novamente
     if(contadorPlayers >= ArrayPlayers.length){
@@ -269,9 +258,8 @@ function finalizarRodada(){
     //* Obter o próximo ID na sequência para ser o host
     const proximoHostId = ArrayPlayers[contadorPlayers]; 
     sequenciaIds.push(proximoHostId);
+
     
-    //! Termina a rodada e pega o proximo host
-    contadorPlayers++;
 
     const mensagemNovaRodada = {
         type: 'finalizarRodada',
