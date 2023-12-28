@@ -128,7 +128,8 @@ server.on('connection', (socket) => {
                 // broadcastQuantidadeUsuariosOnline();
                 // socket.send(JSON.stringify({ type: 'quantidadeUsuariosOnline', data: quantidadeUsuariosOnline }));
             }else if(data.type === 'novaRodada'){
-                iniciarNovaRodada(); //* inicia proxima rodada, e define o id do host
+                const idHost = data.idUsuario;
+                iniciarNovaRodada(idHost); //* inicia proxima rodada, e define o id do host
 
             }else if(data.type === 'finalizarRodada'){
 
@@ -236,7 +237,7 @@ let rodadaAtual = 0;
 let perguntaAtual;
 let contadorPlayers = -1;
 
-function iniciarNovaRodada() {
+function iniciarNovaRodada(idHost) {
     rodadaAtual++;
     // contadorPlayers++
     perguntaAtual = obterPerguntaAleatoria();
@@ -253,7 +254,7 @@ function iniciarNovaRodada() {
     //  sequenciaIds.push(proximoHostId);
  
     //  enviarNovaRodadaParaClientes(proximoHostId);
-     enviarNovaRodadaParaClientes();
+     enviarNovaRodadaParaClientes(idHost);
     
 }
 
@@ -293,14 +294,14 @@ function obterPerguntaAleatoria() {
 }
 
 // function enviarNovaRodadaParaClientes(hostId) {
-function enviarNovaRodadaParaClientes() {
+function enviarNovaRodadaParaClientes(idHost) {
     const mensagemNovaRodada = {
         type: 'novaRodada',
         data: {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
             // opcoes: perguntaAtual.opcoes,
-            // host: hostId
+            host: idHost
         },
     };
 
