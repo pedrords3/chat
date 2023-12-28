@@ -236,7 +236,7 @@ function gerarSalaId() {
 //TODO-----------SISTEMA DE PERGUNTAS E RODADAS--------------------------------
 let rodadaAtual = 0;
 let perguntaAtual;
-let contadorPlayers = -1;
+let contadorPlayers = 0;
 
 function iniciarNovaRodada(idHost) {
     rodadaAtual++;
@@ -260,15 +260,18 @@ function iniciarNovaRodada(idHost) {
 }
 
 function finalizarRodada(){
-    //! Termina a rodada e pega o proximo host
-    contadorPlayers++;
+    
     //! Se contador de jogadores for maior ou igual ao array de player o contador zera novamente
     if(contadorPlayers >= ArrayPlayers.length){
-        contadorPlayers = -1;
+        contadorPlayers = 0;
     }
+    
     //* Obter o próximo ID na sequência para ser o host
     const proximoHostId = ArrayPlayers[contadorPlayers]; 
     sequenciaIds.push(proximoHostId);
+    
+    //! Termina a rodada e pega o proximo host
+    contadorPlayers++;
 
     const mensagemNovaRodada = {
         type: 'finalizarRodada',
