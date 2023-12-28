@@ -200,7 +200,7 @@ server.on('connection', (socket) => {
         }
 
     });
-    // iniciarNovaRodada(); // INICIANDO SEMPRE QUE ALGUEM NOVO USUARIO ENTRA OU ATIVA NO SERVIDOR
+    
 });
 
 //* Entrar em uma sala existente
@@ -259,8 +259,6 @@ function finalizarRodada(){
     const proximoHostId = ArrayPlayers[contadorPlayers]; 
     sequenciaIds.push(proximoHostId);
 
-    
-
     const mensagemNovaRodada = {
         type: 'finalizarRodada',
         data: {
@@ -285,14 +283,13 @@ function obterPerguntaAleatoria() {
     return perguntasEmbaralhadas[0];
 }
 
-// function enviarNovaRodadaParaClientes(hostId) {
+
 function enviarNovaRodadaParaClientes(idHost) {
     const mensagemNovaRodada = {
         type: 'novaRodada',
         data: {
             rodada: rodadaAtual,
             pergunta: perguntaAtual.pergunta,
-            // opcoes: perguntaAtual.opcoes,
             host: idHost
         },
     };
@@ -305,7 +302,5 @@ function enviarNovaRodadaParaClientes(idHost) {
     });
 }
 
-function defineIdUsuario(){
 
-}
 //TODO---------------↑↑↑----------------------------
