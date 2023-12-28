@@ -84,9 +84,9 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         //* Enviar mensagem de entrada para o servidor
         socket.send(JSON.stringify({ type: 'enter', sender: username, idusuario: idUser}));
 
-        //! Cria cartas runtime
-        console.log("Criando cartas");
-        CriaCartas();
+        //! Cria cartas runtime (teste)
+        // console.log("Criando cartas");
+        // CriaCartas();
     });
 
     //* Event listener para mensagens recebidas do servidor
@@ -130,6 +130,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
                 // socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: idUsu }));
 
             }
+
             // alert("Usuarios online: "+quantidadeUsuarios)
 
         } else if (messageType === 'history') { //* Historico Log
@@ -153,7 +154,6 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
                 var str = 
                 `<div class="carta-resposta cursorPointer">
                     <p class="respostaSelecionada"> ${respostaText}</p>
-                    <div class="escolherResposta" >Escolher essa</div>
                 </div>`
             }
             escolhasPlayersDiv.innerHTML += str;
@@ -209,13 +209,13 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             chatDiv.innerHTML += `<p><strong>${senderName}:</strong> ${messageText}</p>`;
 
         }else if (messageType === 'novaRodada') { 
-            console.log("CAIU AQUI");
             const rodadaAtual = messageData.data.rodada;
             const pergunta = messageData.data.pergunta;
             const idHost = messageData.data.host;
 
             hostMandante = idHost;
 
+            socket.send(JSON.stringify({ type: 'cartasRespostas' })); //* Enviar comando para receber as cartas de respostas
             console.log(`Iniciando a rodada ${rodadaAtual}`);
             // alert("Seu id é "+idUser+" e o host é "+idHost);
             DesabilitarCartas();
@@ -263,6 +263,11 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             }
 
            
+
+        }else if(messageType === 'retornoRespostas'){
+            console.log("RETORNO RESPOSTAS");
+            console.log(messageData.cartas);
+            CriaCartas(messageData.cartas)
 
         }else if(messageType === 'pontuacaoJogador'){
             console.log("--------------------PONTUAÇÃO--------------------");
@@ -372,13 +377,18 @@ document.addEventListener('click', (event) => {
     
 });
 
-function CriaCartas() {
+function CriaCartas(arrayCartas) {
+
     var str = '';
     var dados = $("#resposta");
+    
 
-    for (let i = 1; i <= 10; i++) {
-        str += `<div class="cartas text-white cursorPointer" codigo="` + i + `">
-                    <div class="carta-content answer">Resposta ` + i + `</div>
+    for (let i = 0; i < arrayCartas.length; i++) {
+        const resposta = arrayCartas[i].resposta;
+        // console.log(resposta);
+    
+        str += `<div class="cartas text-white cursorPointer" codigo="${i + 1}">
+                    <div class="carta-content answer">${resposta}</div>
                 </div>`;
     }
 
@@ -417,7 +427,11 @@ $("#iniciarPartida").on("click",function(){
     $("#iniciarPartida").css("display","none");
 
     // console.log("jogadores ao iniciar");
+    console.log("partida iniciada");
 
+    //!RECEBER AS CARTAS DE RESOPOSTAS ALEATORIAS
+    console.log("enviando sinal para criar cartas de resposta");
+    
     socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idUser })); //* Enviar comando para iniciar a rodada
 })
 
