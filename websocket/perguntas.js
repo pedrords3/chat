@@ -201,3 +201,5 @@ const perguntas = [
     {pergunta:"QUANDO O FARAÓ PERMANECEU IMÓVEL, MOISÉS INVOCOU DOS CÉUS A PRAGA DOS ____."},
     {pergunta:"A&E APRESENTA _____, A HISTÓRIA DE _____."},
 ];
+
+module.exports = perguntas;
