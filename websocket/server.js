@@ -56,7 +56,7 @@ server.on('connection', (socket) => {
             // }
            
             else if (data.type === 'enter' && !usuario) {
-                //* Se o tipo de mensagem for 'enter', definir o nome do usuário, //? sequencia de host
+                //* Se o tipo de mensagem for 'enter', definir o nome do usuário
                 usuario = data.sender;        
                 idPlayer = data.idusuario; 
                 
@@ -74,7 +74,6 @@ server.on('connection', (socket) => {
                 
                 console.log("Id Usuario "+idPlayer);
                 //* Enviar mensagem de entrada para o novo cliente
-                //? PEGAR E PASSAR O ID DO USUARIO
                 const enterMessage = { type: 'enter', data: 'Entrou no chat', sender: usuario, qtdusuarios: quantidadeUsuariosOnline, iduser: idPlayer };
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
