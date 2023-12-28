@@ -453,7 +453,7 @@ function responderPergunta(element) {
 
 //TODO -------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
-
+-----------JOGABILIDADE-----------
 - ID DE CADA USUARIO (não pode repetir, nem mudar) [✅]
 - SELECIONAR HOST [✅]
 - TROCAR HOST APOS ENCERRAR A RODADA [✅]
@@ -461,11 +461,27 @@ function responderPergunta(element) {
 - HOST DEVE ESCOLHER A CARTA DE RESPOSTA [✅]
 - CARTA DE RESPOSTA DEVE TER O ID DO USUARIO [✅]
 - SISTEMA DE PONTUAÇÃO, AO ESCOLHER A CARTA DE RESPOSTA [✅]
-- CORRIGIR BUG QUANDO NOVO USUARIO CONECTAR NO MEIO DA PARTIDA []
-- CORRIGIR BUG QUANDO USUARIO SE RECONECTAR (F5- recarregar pagina) E QUANDO FOR O HOST []
-- BUG AO SAIR USUARIO COM MESMO NOME [] (os dois são removidos - deve remover por ID)
-- BUG AO USUARIO DESCONECTAR, PONTUAÇÃO ESTA ZERANDO []
 - CRIAR CARTAS DE RESPOSTAS []
+- CRIAR RANDOMIZAÇÃO SEM REPETIR RESPOSTAS []
+- APOS RESPONDER: RECEBER PROXIMA CARTA []
+- TER NO MINIMO 3 JOGADORES PARA INICIAR A PARTIDA []
+
+
+-----------CORREÇÃO DE BUGS-----------
+- CORRIGIR BUG QUANDO NOVO USUARIO CONECTAR NO MEIO DA PARTIDA []
+- CORRIGIR BUG QUANDO USUARIO SE RECONECTAR (F5 - recarregar pagina) E QUANDO FOR O HOST []
+- BUG AO SAIR USUARIO COM MESMO NOME (os dois são removidos - deve remover por ID) [] 
+- BUG MENSAGEM DE 'RESPONDEU' AO ENVIAR A RESPOSTA (so aparece quando recarrega, ou outro usuario entra) []
+- BUG AO USUARIO DESCONECTAR, PONTUAÇÃO ESTA ZERANDO []
+
+
+-----------MELHORIAS-----------
+- TEMPORIZADOR PARA ENVIAR RESPOSTAS AUTOMATICAMENTE(caso jogador nem envie) []
+- HOST, SOMENTE VOTAR APOS TODOS ENVIAREM AS RESPOSTAS []
+- ENVIAR RESPOSTAS 'OCULTAS' E O HOST VIRAR UMA A UMA (ou todas de uma vez) []
+- SISTEMAS DE SALAS []
+- SALAS PRIVADAS(senha) []
+
 
 */
 //TODO -------------------------------------------------------------------------------------------------------------------------------------------------------
