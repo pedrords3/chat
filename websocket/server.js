@@ -136,6 +136,19 @@ server.on('connection', (socket) => {
             }else if(data.type === 'finalizarRodada'){
                 finalizarRodada();
 
+            }else if(data.type === 'cartasRespostas'){
+
+                let arrayRespostas = [];
+                for(let i = 0; i < 10; i++){
+                    arrayRespostas.push(respostasRandom());
+                }
+                
+                server.clients.forEach((client) => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(JSON.stringify({ type: 'retornoRespostas', cartas: arrayRespostas }));
+                    }
+                });
+
             }else if(data.type === 'pontuacaoUsuario'){
                 const idPontuador = data.idUsu;
                 const Thiss = data.thiss;
