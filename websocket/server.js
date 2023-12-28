@@ -6,6 +6,7 @@ const WebSocket = require('ws');
 const {WebSocketServer} = require("ws");
 const dotenv = require("dotenv");
 const perguntas = require("./perguntas");
+const respostas = require("./respostas");
 
 dotenv.config()
 const server = new WebSocketServer({port: process.env.PORT || 8080 })
@@ -304,6 +305,12 @@ function obterPerguntaAleatoria() {
     // Array shuffle para obter uma pergunta aleatória
     const perguntasEmbaralhadas = perguntas.slice().sort(() => Math.random() - 0.5);
     return perguntasEmbaralhadas[0];
+}
+
+function respostasRandom(){ 
+    const respotasEmbaralhadas = respostas.slice().sort(() => Math.random() - 0.5);
+    return respotasEmbaralhadas[0];
+
 }
 
 
