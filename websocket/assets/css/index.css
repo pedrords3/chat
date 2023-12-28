@@ -194,6 +194,9 @@ body{
     background-color: #c9f7f5; /* Adicione a cor desejada para mensagens de resposta */
 }
 
+.pontosUsuario{
+    margin-left: 10px;
+}
 .cursorPointer{
     cursor: pointer;
 }
