@@ -132,6 +132,7 @@ server.on('connection', (socket) => {
                 iniciarNovaRodada(idHost); //* inicia proxima rodada, e define o id do host
 
             }else if(data.type === 'finalizarRodada'){
+                finalizarRodada();
 
             }
         } catch (error) {
