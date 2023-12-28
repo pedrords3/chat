@@ -137,8 +137,9 @@ server.on('connection', (socket) => {
 
             }else if(data.type === 'pontuacaoUsuario'){
                 const idPontuador = data.idUsu;
-                pontuacaoJogador(idPontuador);
-
+                const Thiss = data.thiss;
+                pontuacaoJogador(idPontuador, Thiss);
+            
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
@@ -146,9 +147,11 @@ server.on('connection', (socket) => {
 
     });
 
-    function pontuacaoJogador(idPontuador){
-        const pontuacao = { type: 'pontuacaoJogador', idUsuario: idPontuador };
-
+    function pontuacaoJogador(idPontuador, Thiss){
+        const usuariosArray = Array.from(usuariosOnline);
+        const idUsuariosArray = Array.from(idUsersOnline);
+        const pontuacao = { type: 'pontuacaoJogador', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline, idUser: idUsuariosArray, pontuador: idPontuador, thiss: Thiss };
+        
         //* Enviar lista atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
