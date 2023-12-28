@@ -166,7 +166,7 @@ server.on('connection', (socket) => {
 
     function broadcastUsuariosOnline() {
         const usuariosArray = Array.from(usuariosOnline);
-        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline };
+        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline, idUser: idPlayer };
 
         //* Enviar lista atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
