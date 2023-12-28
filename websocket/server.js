@@ -13,10 +13,11 @@ const server = new WebSocketServer({port: process.env.PORT || 8080 })
 const salas = new Map(); //* Mapa de salas (id da sala -> array de clientes)
 
 const usuariosOnline = new Set();
+const idUsersOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
-var idUsuario = 0;
+// var idUsuario = 0;
 let sequenciaIds = [];
 let idPlayer = 0;
 let ArrayPlayers = [];
@@ -66,8 +67,8 @@ server.on('connection', (socket) => {
                 if (!usuariosOnline.has(usuario)) {
                     quantidadeUsuariosOnline++;
                     usuariosOnline.add(usuario);
+                    idUsersOnline.add(idPlayer);
                     
-                    idUsuario++;
                 }
                 
                 console.log(`Usuário definido como: ${usuario}`);
@@ -120,6 +121,7 @@ server.on('connection', (socket) => {
                 quantidadeUsuariosOnline--;
 
                 usuariosOnline.delete(usuario);
+                idUsersOnline.delete(idPlayer);
                 ArrayPlayers.delete(idPlayer); //* remove id do jogador que saiu
 
                 //* Enviar lista atualizada de usuários online para todos os clientes
@@ -166,7 +168,9 @@ server.on('connection', (socket) => {
 
     function broadcastUsuariosOnline() {
         const usuariosArray = Array.from(usuariosOnline);
-        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline, idUser: idPlayer };
+        const idUsuariosArray = Array.from(idUsersOnline);
+
+        const usuariosOnlineMessage = { type: 'usuariosOnline', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline, idUser: idUsuariosArray };
 
         //* Enviar lista atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
@@ -196,6 +200,8 @@ server.on('connection', (socket) => {
         //* Remover o usuário da lista de usuários online
         if (usuariosOnline.has(usuario)) {
             usuariosOnline.delete(usuario);
+            idUsersOnline.delete(idPlayer);
+
             quantidadeUsuariosOnline--;
     
             //* Enviar lista atualizada de usuários online para todos os clientes
