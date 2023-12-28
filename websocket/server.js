@@ -147,10 +147,10 @@ server.on('connection', (socket) => {
 
     });
 
-    function pontuacaoJogador(idPontuador, Thiss){
+    function pontuacaoJogador(idPontuador, This){
         const usuariosArray = Array.from(usuariosOnline);
         const idUsuariosArray = Array.from(idUsersOnline);
-        const pontuacao = { type: 'pontuacaoJogador', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline, idUser: idUsuariosArray, pontuador: idPontuador, thiss: Thiss };
+        const pontuacao = { type: 'pontuacaoJogador', data: usuariosArray, qtdUsuarios: quantidadeUsuariosOnline, idUser: idUsuariosArray, pontuador: idPontuador, thiss: This };
         
         //* Enviar lista atualizada de usuários online para todos os clientes
         server.clients.forEach((client) => {
