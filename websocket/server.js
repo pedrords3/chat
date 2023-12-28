@@ -133,12 +133,27 @@ server.on('connection', (socket) => {
             }else if(data.type === 'finalizarRodada'){
                 finalizarRodada();
 
+            }else if(data.type === 'pontuacaoUsuario'){
+                const idPontuador = data.idUsu;
+                pontuacaoJogador(idPontuador);
+
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
         }
 
     });
+
+    function pontuacaoJogador(idPontuador){
+        const pontuacao = { type: 'pontuacaoJogador', idUsuario: idPontuador };
+
+        //* Enviar lista atualizada de usuários online para todos os clientes
+        server.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(pontuacao));
+            }
+        });
+    }
 
     // function broadcastQuantidadeUsuariosOnline() {
     //     //* Enviar quantidade atualizada de usuários online para todos os clientes
