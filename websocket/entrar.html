@@ -25,12 +25,14 @@
 
     <div class="container-fluid display">
         <div class="row">
-            <div class="col-md-3"> <!-- Coluna à esquerda ocupando 25% -->
+            <!-- Coluna à esquerda ocupando 25% -->
+            <div class="col-md-3"> 
                 <div id="chat"></div>
                 <textarea id="messageInput" placeholder="Digite aqui" maxlength="100"></textarea>
                 <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
             </div>
-            <div class="col-md-9" style="height: 100vh;">  <!-- Coluna à direita ocupando 75% -->
+            <!-- Coluna à direita ocupando 75% -->
+            <div class="col-md-9" style="height: 100vh;">  
                 <!-- //! Conteúdo para a coluna à direita -->
                 <div class="Mesa">
                     <div class="container">
@@ -71,6 +73,7 @@
                             </div>
                             <div class="col text-left">
                                 <button id="iniciarPartida" style="display: none;">Iniciar Partida</button>
+                                <p id="whoHost" style="display:none">VOCÊ É O MANDANTE DESSA RODADA</p>
                             </div>
                         </div>
                     </div>
