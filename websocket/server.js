@@ -137,7 +137,7 @@ server.on('connection', (socket) => {
                 finalizarRodada();
 
             }else if(data.type === 'cartasRespostas'){
-
+                let idHostRodada = data.idHostRodada;
                 let arrayRespostas = [];
                 for(let i = 0; i < 10; i++){
                     arrayRespostas.push(respostasRandom());
@@ -145,7 +145,7 @@ server.on('connection', (socket) => {
                 
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
-                        client.send(JSON.stringify({ type: 'retornoRespostas', cartas: arrayRespostas }));
+                        client.send(JSON.stringify({ type: 'retornoRespostas', cartas: arrayRespostas, idHost: idHostRodada }));
                     }
                 });
 
