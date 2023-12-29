@@ -214,14 +214,13 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
 
             hostMandante = idHost;
 
-            socket.send(JSON.stringify({ type: 'cartasRespostas' })); //* Enviar comando para receber as cartas de respostas ??
+            socket.send(JSON.stringify({ type: 'cartasRespostas', idHostRodada: idHost })); //* Enviar comando para receber as cartas de respostas ??
 
             console.log(`Iniciando a rodada ${rodadaAtual}`);
             // alert("Seu id é "+idUser+" e o host é "+idHost);
             DesabilitarCartas();
             if(idUser == idHost){ 
                 console.log("NOVA RODADA, você é o host: "+idHost);//* Se for o host
-
 
             }else{
                 HabilitarCartas(); //* Se não for o host
@@ -267,7 +266,12 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         }else if(messageType === 'retornoRespostas'){
             console.log("RETORNO RESPOSTAS");
             console.log(messageData.cartas);
-            CriaCartas(messageData.cartas)
+            CriaCartas(messageData.cartas);
+            console.log("RETORNO HOST: "+messageData.idHost + " HOST DA RODADA: "+idUser);
+            //! DESABILITAR CARTAS DE RESPOSTAS QND FOR O HOST DA RODADA
+            if(messageData.idHost == idUser){
+                DesabilitarCartas();
+            }
 
         }else if(messageType === 'pontuacaoJogador'){
             console.log("--------------------PONTUAÇÃO--------------------");
