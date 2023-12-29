@@ -84,7 +84,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         //* Enviar mensagem de entrada para o servidor
         socket.send(JSON.stringify({ type: 'enter', sender: username, idusuario: idUser}));
 
-        //! Cria cartas runtime (teste)
+        //! Cria cartas runtime
         // console.log("Criando cartas");
         // CriaCartas();
     });
@@ -130,7 +130,6 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
                 // socket.send(JSON.stringify({ type: 'host', nomeuser: senderName, iduser: idUsu }));
 
             }
-
             // alert("Usuarios online: "+quantidadeUsuarios)
 
         } else if (messageType === 'history') { //* Historico Log
@@ -215,7 +214,8 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
 
             hostMandante = idHost;
 
-            socket.send(JSON.stringify({ type: 'cartasRespostas' })); //* Enviar comando para receber as cartas de respostas
+            socket.send(JSON.stringify({ type: 'cartasRespostas' })); //* Enviar comando para receber as cartas de respostas ??
+
             console.log(`Iniciando a rodada ${rodadaAtual}`);
             // alert("Seu id é "+idUser+" e o host é "+idHost);
             DesabilitarCartas();
@@ -397,6 +397,21 @@ function CriaCartas(arrayCartas) {
     //* Adiciona um identificador à div resposta para referência fácil
     dados.attr("id", "respostaContainer");
 }
+// function CriaCartas() {
+//     var str = '';
+//     var dados = $("#resposta");
+
+//     for (let i = 1; i <= 10; i++) {
+//         str += `<div class="cartas text-white cursorPointer" codigo="` + i + `">
+//                     <div class="carta-content answer">Resposta ` + i + `</div>
+//                 </div>`;
+//     }
+
+//     dados.append(str);
+
+//     //* Adiciona um identificador à div resposta para referência fácil
+//     dados.attr("id", "respostaContainer");
+// }
 
 // Função para desabilitar os elementos dentro da div resposta
 function DesabilitarCartas() {
@@ -431,7 +446,7 @@ $("#iniciarPartida").on("click",function(){
 
     //!RECEBER AS CARTAS DE RESOPOSTAS ALEATORIAS
     console.log("enviando sinal para criar cartas de resposta");
-    
+
     socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idUser })); //* Enviar comando para iniciar a rodada
 })
 
