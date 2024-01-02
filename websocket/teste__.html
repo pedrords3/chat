@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>HexChat</title> 
+
+    <script src="assets/js/jquery.3.2.1.min.js"></script>    
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>   
+
+    <!-- //! LOADER -->
+    <div id="loader" class="justify-content-center align-items-center text-white d-print-none" style="display:none;height:100%; width:100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))">
+		<p style="width: 48px; ">
+			<span class="fa fa-spinner fa-spin fa"></span>
+		</p>
+		<p id="TextoLoad" style="font-weight:bold">Carregando...</p>
+	</div>
+
+    <div style="height: 100vh; width: 100%; background-color: lightgray">
+        <div style="height: 50%; width: 100%; background-color: black">
+            <div class="d-flex justify-content-between" >
+                <div style="width: 30%; ">
+                    <div id="chat"></div>
+                    <textarea id="messageInput" placeholder="Digite aqui" maxlength="100"></textarea>
+                    <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
+                </div>
+                <div class="Mesa">
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >HEX PLAY</p>
+                            </div>
+                            <div class="col text-right">
+                                <p >Jogadores online: <span id="PlayersOn"></span> </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="deck" class="d-flex justify-content-between">
+                        <div id="escolhas" class="escolhasPlayers text-white row ">
+                        </div>
+                        <div class="cartas text-white text-center">
+                            <p id="numPergunta">PERGUNTA -</p>
+                            <p id="question">Partida em andamento!<br><br>Aguarde o inicio da próxima rodada</p>
+                        </div>
+                        <div id="Rodada" class="text-white ">
+                            <p>Pontuação:</p>
+                            <div id="jogadoresOnline" >
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div style="height: 50%; width: 100%; background-color: gray">
+            <div class="container">
+                <div class="row text-white">
+                    <div class="col text-center">
+                        <p >SUAS RESPOSTAS</p>
+                    </div>
+                    <div class="col text-left">
+                        <button id="iniciarPartida" style="display: none;">Iniciar Partida</button>
+                        <p id="whoHost" style="display:none">VOCÊ É O MANDANTE DESSA RODADA</p>
+                    </div>
+                </div>
+            </div>
+            <div id="resposta" class="row">
+            </div>
+        </div>
+
+    </div>
+    <!-- <div class="container-fluid display">
+        <div class="row">
+            <div class="col-md-3"> 
+                <div id="chat"></div>
+                <textarea id="messageInput" placeholder="Digite aqui" maxlength="100"></textarea>
+                <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
+            </div>
+            <div class="col-md-9" style="height: 100vh;">  
+                <div class="Mesa">
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >HEX PLAY</p>
+                            </div>
+                            <div class="col text-right">
+                                <p >Jogadores online: <span id="PlayersOn"></span> </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="deck" class="d-flex justify-content-between">
+                        <div id="escolhas" class="escolhasPlayers text-white row ">
+                        </div>
+                        <div class="cartas text-white text-center">
+                            <p id="numPergunta">PERGUNTA -</p>
+                            <p id="question">Partida em andamento!<br><br>Aguarde o inicio da próxima rodada</p>
+                        </div>
+                        <div id="Rodada" class="text-white ">
+                            <p>Pontuação:</p>
+                            <div id="jogadoresOnline" >
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <br>
+
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >SUAS RESPOSTAS</p>
+                            </div>
+                            <div class="col text-left">
+                                <button id="iniciarPartida" style="display: none;">Iniciar Partida</button>
+                                <p id="whoHost" style="display:none">VOCÊ É O MANDANTE DESSA RODADA</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="resposta" class="row">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div> -->
+    
+    <!-- //! SCRIPT CLIENT -->
+    <script src="assets/js/index.js"></script>
+</body>
+</html>
