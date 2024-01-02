@@ -5,7 +5,8 @@
     border-radius: 7px;
     border: solid 1px black;
     /* width: 35%; */
-    height: 85vh;
+    height: 60vh;
+    max-height: 40vh;
     overflow-y: scroll; 
     overflow-x: hidden;
     word-wrap: break-word;
@@ -80,7 +81,8 @@
 }
 
 #messageInput {
-    height: auto;
+    /* height: auto; */
+    max-height: 50px;
     width: 90%;
     margin: 10px;
     white-space: pre-wrap;
@@ -147,7 +149,7 @@ body{
     max-width: 150px;
     height: 200px; */
     width: 12%;
-    max-width: 150px;
+    max-width: 100px;
     height: 130px;
     border: solid 1px rgb(172, 36, 172);
     border-radius: 5px;
@@ -157,15 +159,22 @@ body{
     overflow-y: auto;
     font-size: 12px;
 }
+.cartas:hover{
+    transform: scale(1.5);
+}
 .carta-content {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px; /* Adicione algum espaço interno para melhorar o visual */
+    /* padding: 10px;  */
+    /* Adicione algum espaço interno para melhorar o visual */
 }
 .cartas-desabilitadas {
     opacity: 0.5; /* Torna os elementos semi-transparentes quando desabilitados */
+}
+#respostaContainer{
+    margin-left: 40px
 }
 
 .carta-resposta{
