@@ -322,17 +322,46 @@ function obterPerguntaAleatoria() {
 
 
 function respostasRandom() {
+    // Certifique-se de que o array de respostas está disponível e não está vazio
     if (respostas.length === 0) {
         // Se todas as respostas já foram usadas, reinicie o array
         respostas = require("./respostas"); // Reinicie o array de respostas
     }
 
-    const index = Math.floor(Math.random() * respostas.length);
-    const respostaSelecionada = respostas[index];
-    respostas.splice(index, 1); // Remova a resposta selecionada do array
+    // Crie uma cópia do array de respostas para manipular
+    const respostasTemp = [...respostas];
 
-    return respostaSelecionada;
+    // Garanta que o array de respostas temporárias não esteja vazio
+    if (respostasTemp.length > 0) {
+        // Escolha uma resposta aleatória do array de respostas temporárias
+        const index = Math.floor(Math.random() * respostasTemp.length);
+        const respostaSelecionada = respostasTemp[index];
+
+        // Remova a resposta selecionada do array temporário
+        respostasTemp.splice(index, 1);
+
+        // Retorne a resposta selecionada
+        return respostaSelecionada;
+    } else {
+        // Caso o array de respostas temporárias esteja vazio, reinicie o array
+        respostas = require("./respostas");
+        // Chame recursivamente a função para obter uma resposta
+        return respostasRandom();
+    }
 }
+
+// function respostasRandom() {
+//     if (respostas.length === 0) {
+//         // Se todas as respostas já foram usadas, reinicie o array
+//         respostas = require("./respostas"); // Reinicie o array de respostas
+//     }
+
+//     const index = Math.floor(Math.random() * respostas.length);
+//     const respostaSelecionada = respostas[index];
+//     respostas.splice(index, 1); // Remova a resposta selecionada do array
+
+//     return respostaSelecionada;
+// }
 
 // function respostasRandom(){ 
 //     const respotasEmbaralhadas = respostas.slice().sort(() => Math.random() - 0.5);
