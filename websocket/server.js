@@ -320,11 +320,25 @@ function obterPerguntaAleatoria() {
     return perguntasEmbaralhadas[0];
 }
 
-function respostasRandom(){ 
-    const respotasEmbaralhadas = respostas.slice().sort(() => Math.random() - 0.5);
-    return respotasEmbaralhadas[0];
 
+function respostasRandom() {
+    if (respostas.length === 0) {
+        // Se todas as respostas já foram usadas, reinicie o array
+        respostas = require("./respostas"); // Reinicie o array de respostas
+    }
+
+    const index = Math.floor(Math.random() * respostas.length);
+    const respostaSelecionada = respostas[index];
+    respostas.splice(index, 1); // Remova a resposta selecionada do array
+
+    return respostaSelecionada;
 }
+
+// function respostasRandom(){ 
+//     const respotasEmbaralhadas = respostas.slice().sort(() => Math.random() - 0.5);
+//     return respotasEmbaralhadas[0];
+
+// }
 
 
 function enviarNovaRodadaParaClientes(idHost) {
