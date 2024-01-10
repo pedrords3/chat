@@ -137,17 +137,39 @@ server.on('connection', (socket) => {
                 finalizarRodada();
 
             }else if(data.type === 'cartasRespostas'){
+                //TODO
                 let idHostRodada = data.idHostRodada;
                 let arrayRespostas = [];
-                for(let i = 0; i < 10; i++){
-                    arrayRespostas.push(respostasRandom());
+
+                // Crie um objeto para armazenar as cartas e o ID do jogador correspondente
+                const cartasObj = {
+                    cartas: [],
+                    idJogador: socket.idPlayer // Certifique-se de enviar o ID do jogador correto
+                };
+
+                for (let i = 0; i < 10; i++) {
+                    cartasObj.cartas.push(respostasRandom());
                 }
-                
+
+                arrayRespostas.push(cartasObj);
+
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({ type: 'retornoRespostas', cartas: arrayRespostas, idHost: idHostRodada }));
                     }
                 });
+                //TODO
+                // let idHostRodada = data.idHostRodada;
+                // let arrayRespostas = [];
+                // for(let i = 0; i < 10; i++){
+                //     arrayRespostas.push(respostasRandom());
+                // }
+                
+                // server.clients.forEach((client) => {
+                //     if (client.readyState === WebSocket.OPEN) {
+                //         client.send(JSON.stringify({ type: 'retornoRespostas', cartas: arrayRespostas, idHost: idHostRodada }));
+                //     }
+                // });
 
             }else if(data.type === 'pontuacaoUsuario'){
                 const idPontuador = data.idUsu;
