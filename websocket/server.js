@@ -168,24 +168,6 @@ server.on('connection', (socket) => {
                     }
                 });
 
-            }else if(data.type === 'partidaIniciada'){ //voltaaqui
-                var salaSelecionada = data.sala;
-                var iniciarPartida = data.iniciar;
-
-                //! se recebeu comando para iniciar partida
-                if(iniciarPartida == true){
-                    salas.push(salaSelecionada); //* Grava id da sala
-                    salas = salas.filter(item => item !== 0);
-                }else{
-                    salas.push(0);
-                }
-
-                
-                server.clients.forEach((client) => {
-                    if (client.readyState === WebSocket.OPEN) {
-                        client.send(JSON.stringify({ type: 'partidaIniciadaServidor', sala: salas, partida: iniciarPartida }));
-                    }
-                });
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
