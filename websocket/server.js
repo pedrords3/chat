@@ -146,7 +146,7 @@ server.on('connection', (socket) => {
                 
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
-                        client.send(JSON.stringify({ type: 'retornoRespostas', cartas: arrayRespostas, idHost: idHostRodada, idPlayer: idJogador }));
+                        client.send(JSON.stringify({ type: 'retornoRespostas'+idJogador+'', cartas: arrayRespostas, idHost: idHostRodada, idPlayer: idJogador }));
                     }
                 });
 
