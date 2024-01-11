@@ -84,6 +84,7 @@
     /* height: auto; */
     max-height: 50px;
     width: 90%;
+    max-width: 90%;
     margin: 10px;
     white-space: pre-wrap;
     overflow-wrap: break-word;
@@ -110,6 +111,10 @@
     max-width: 90%; /* //*Define a largura máxima do balão para 85% do contêiner */
     word-wrap: break-word; /* //* Garante que palavras longas se quebrem corretamente */
     min-width: 50%;
+}
+
+.text-black{
+    color:black;
 }
 
 .username {
@@ -247,6 +252,13 @@ body{
     height: 70px;
     z-index: 99999;
 }
+
+.propag{
+    width: 15%;
+    /* height: 100%; */
+    border: solid 1px gray;
+}
+
 
 
 /*//! Adapte as configurações conforme necessário para diferentes tamanhos de tela usando media queries */

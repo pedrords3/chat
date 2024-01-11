@@ -10,6 +10,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
     var ArrayPlayers = [];
     var idHostaRodada = '';
     var hostMandante = '';
+    var respostaNova = '';
     //!Add Load
     $("#loader").addClass("d-flex");
     $("#loader").css("display","block");
@@ -33,7 +34,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         }else{ //* Pegou id pela url 1ª vez
             sessionStorage.setItem('salaId', escolherSala);
         }
-        console.log("Nº da sala "+escolherSala);
+        // console.log("Nº da sala "+escolherSala);
         socket.send(JSON.stringify({ type: 'joinSala', salaId: escolherSala }));
         
         //* Se o nome de usuário ainda não estiver definido - pega da url
@@ -106,8 +107,8 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
         const respostaText = messageData.resposta;
         const quantidadeUsuarios = messageData.qtdusuarios;
         
-    
         const isCurrentUser = senderName === username;
+        // console.log(isCurrentUser);
     
         // console.log("↓");
         // console.log(messageType);
@@ -119,7 +120,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             console.log(messageData);
             const idUsu = messageData.iduser; //? PEGAR O ID DO USUARIO QUE NÃO REPITA
 
-            console.log("Id do Usuario: "+idUsu);
+            console.log("Id do Usuario que entrou: "+idUsu);
 
             DesabilitarCartas();
             if(quantidadeUsuarios == 1){
@@ -146,13 +147,13 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             if(idUser == hostMandante){//* verificar se usuario é o host para poder responder a pergunta
                 var str = 
             `<div class="carta-resposta cursorPointer" onclick="responderPergunta(this)" idUsuario=${messageData.iduser}>
-                <p class="respostaSelecionada"> ${respostaText}</p>
+                <p class="respostaSelecionada" value="${respostaText}"> ${respostaText}</p>
                 <div class="escolherResposta" >Escolher essa</div>
             </div>`
             } else{
                 var str = 
                 `<div class="carta-resposta cursorPointer">
-                    <p class="respostaSelecionada"> ${respostaText}</p>
+                    <p class="respostaSelecionada"  value="${respostaText}"> ${respostaText}</p>
                 </div>`
             }
             escolhasPlayersDiv.innerHTML += str;
@@ -214,7 +215,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
 
             hostMandante = idHost;
 
-            socket.send(JSON.stringify({ type: 'cartasRespostas', idHostRodada: idHost })); //* Enviar comando para receber as cartas de respostas ??
+            socket.send(JSON.stringify({ type: 'cartasRespostas', idHostRodada: idHost, idPlayer: idUser })); //* Enviar comando para receber as cartas de respostas ??
 
             console.log(`Iniciando a rodada ${rodadaAtual}`);
             // alert("Seu id é "+idUser+" e o host é "+idHost);
@@ -263,17 +264,56 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
 
            
 
-        }else if(messageType === 'retornoRespostas'){
+        }else if(messageType === 'retornoRespostas'+idUser+''){
             console.log("RETORNO RESPOSTAS");
-            console.log(messageData.cartas);
-            CriaCartas(messageData.cartas);
-            console.log("RETORNO HOST: "+messageData.idHost + " HOST DA RODADA: "+idUser);
+            // console.log(messageData.cartas);
+            console.log(messageData);
+            console.log("--------- CRIANDO AS CARTAS DAS RESPOSTAS ---------");
+            CriaCartas(messageData.cartas); //voltaaqui
+
+            // console.log("RETORNO HOST: "+messageData.idHost + " HOST DA RODADA: "+idUser);
             //! DESABILITAR CARTAS DE RESPOSTAS QND FOR O HOST DA RODADA
             if(messageData.idHost == idUser){
                 DesabilitarCartas();
             }
 
-        }else if(messageType === 'pontuacaoJogador'){
+        }else if(messageType === 'receberCartaResposta'+idUser+''){
+            //!RECEBE 1 CARTA APOS ENVIAR UMA RESPOSTA
+            console.log("1 CARTA DE RESPOSTA:");
+            console.log(messageData);
+            
+            respostaNova = messageData.cartas[0].resposta;
+            console.log("RESPOSTA NOVA: "+ respostaNova );
+
+            let cartaResp = messageData.idCartaResposta;
+
+            console.log("VALOR ATRIBUIDO");
+            console.log(cartaResp);
+            console.log( $("#"+cartaResp).text());
+            $("#"+cartaResp).text(respostaNova);
+            console.log("novo alterado ---");
+            console.log( $("#"+cartaResp).text());
+
+            //  // Crie um novo elemento div temporário
+            // var tempDiv = document.createElement('div');
+            // // Defina o HTML interno usando o outerHTML recebido
+            // tempDiv.innerHTML = messageData.cartaSelecionada;
+            // // Obtenha o primeiro filho do novo elemento (o próprio elemento)
+            // var cartaThis = tempDiv.firstChild;
+
+            // // Substitua o valor do texto na cartaThis
+            // cartaThis.innerText = respostaNova;
+            // cartaThis.setAttribute('value', respostaNova);
+
+            // console.log("CARTA SELECIONADA ↓ ");
+            // console.log(cartaThis);
+            // console.log(cartaThis.innerText);
+
+
+            //voltaaqui
+            
+        }
+        else if(messageType === 'pontuacaoJogador'){
             console.log("--------------------PONTUAÇÃO--------------------");
             console.log(messageData.thiss);
             const pontuador = messageData.pontuador; 
@@ -284,7 +324,7 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             const usuariosOnlineArray = messageData.data;
             const IdUserOnline = messageData.idUser;
             
-            // if (IdUserOnline.indexOf(pontuador) !== -1) { // voltaaqui
+            // if (IdUserOnline.indexOf(pontuador) !== -1) { 
             //     console.log("TEM ESSE PONTUADOR, AGORA PONTUAR");
             // }
             
@@ -373,14 +413,37 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
 //! ENVIA RESPOSTA ESCOLHIDA
 document.addEventListener('click', (event) => {
     const selectedAnswer = event.target.closest('.answer');
+    
+    //!ENVIAR SINAL PARA O SERVIDOR PARA RECEBER OUTRA RESPOSTA APOS ENVIAR UMA CARTA  
+    console.log("--- ENVIANDO SINAL PARA RECEBER OUTRA RESPOSTA ---");
+    console.log(selectedAnswer);
+    
+    var idCartaResposta = selectedAnswer.id //* Id da carta selecionada
+
     if (selectedAnswer) {
         const answerText = selectedAnswer.textContent.trim();
+        const answerHTML = selectedAnswer.outerHTML;
+        socket.send(JSON.stringify({ type: 'receberCarta', idUsu: idUser, cartaSelecionada: answerHTML, idCarta: idCartaResposta})); //VOLTAAQUI
+        // alert(answerText);
         socket.send(JSON.stringify({ type: 'answer', data: 'Respondeu', sender: username, resposta: answerText, idusuario: idUser }));
         DesabilitarCartas(); //* ao responder, desabilita cartas 
+        
     }
     
 });
 
+// function CriaCartas(cartas, idJogador) {
+//     // Certifique-se de limpar as cartas existentes antes de adicionar novas
+//     $("#resposta").empty();
+
+//     cartas.forEach((carta) => {
+//         // Adicione lógica aqui para associar as cartas ao jogador correto
+//         // Por exemplo, você pode criar elementos HTML específicos para cada jogador
+//         // Certifique-se de usar o ID do jogador para garantir a associação correta
+//         const cartaHTML = `<div class="carta" data-id="${idJogador}">${carta}</div>`;
+//         $("#resposta").append(cartaHTML);
+//     });
+// }
 function CriaCartas(arrayCartas) {
 
     var str = '';
@@ -392,7 +455,7 @@ function CriaCartas(arrayCartas) {
         // console.log(resposta);
     
         str += `<div class="cartas text-white cursorPointer" codigo="${i + 1}">
-                    <div class="carta-content answer">${resposta}</div>
+                    <div id="cartaResp`+i+`" class="carta-content answer" value="${resposta}">${resposta}</div>
                 </div>`;
     }
 
@@ -401,21 +464,7 @@ function CriaCartas(arrayCartas) {
     //* Adiciona um identificador à div resposta para referência fácil
     dados.attr("id", "respostaContainer");
 }
-// function CriaCartas() {
-//     var str = '';
-//     var dados = $("#resposta");
 
-//     for (let i = 1; i <= 10; i++) {
-//         str += `<div class="cartas text-white cursorPointer" codigo="` + i + `">
-//                     <div class="carta-content answer">Resposta ` + i + `</div>
-//                 </div>`;
-//     }
-
-//     dados.append(str);
-
-//     //* Adiciona um identificador à div resposta para referência fácil
-//     dados.attr("id", "respostaContainer");
-// }
 
 // Função para desabilitar os elementos dentro da div resposta
 function DesabilitarCartas() {
@@ -437,49 +486,65 @@ function HabilitarCartas() {
 
 
 $("#iniciarPartida").on("click",function(){
-    // alert("Partida iniciada");
-    //! PRECISA: PEGAR TODOS OS JOGADORES ONLINES (NOME E ID) 
-    //! ENVIAR PARA O SERVIDOR FAZER A SELEÇÃO DE HOSTS,
-    //! TODO HOST DEVE TER O BOTÃO DE INICIAR A RODADA,
-    //! HOST NÃO PODE ENVIAR SUAS RESPOSTAS
 
-    $("#iniciarPartida").css("display","none");
+    //!VERIFICA SE QUANTIDADE DE JOGAORES É MAIOR OU IGUAL A 3
+    var qtdJogadores = parseInt($("#PlayersOn").text());
 
-    // console.log("jogadores ao iniciar");
-    console.log("partida iniciada");
+    if(qtdJogadores >= 3){
 
-    //!RECEBER AS CARTAS DE RESOPOSTAS ALEATORIAS
-    console.log("enviando sinal para criar cartas de resposta");
+        $("#iniciarPartida").css("display","none");
 
-    socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idUser })); //* Enviar comando para iniciar a rodada
+        console.log("partida iniciada");
+
+        //!RECEBER AS CARTAS DE RESPOSTAS ALEATORIAS
+        console.log("enviando sinal para criar cartas de resposta");
+
+        socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idUser })); //* Enviar comando para iniciar a rodada
+    }else{
+        alert("Aguarde ter no minímo 3 jogadores")
+    }
 })
 
+
 function responderPergunta(element) {
-    var idUsuario = $(element).attr("idUsuario");
-    var textoParagrafo = $(element).find(".respostaSelecionada").text();
-    
 
-    console.log("ID do Usuário:"+ idUsuario);
-    console.log("Texto do Parágrafo:"+ textoParagrafo);
-    console.log("Ponto para: " + idUsuario);
+    //* Selecione todos os elementos com a classe "carta-resposta"
+    var cartasResposta = document.querySelectorAll('.carta-resposta');
+    //* Obtenha o comprimento (quantidade) dos elementos encontrados
+    var quantidadeCartasResposta = cartasResposta.length;
+    // Exiba a quantidade no console ou faça o que desejar com ela
+    // console.log('Quantidade de cartas-resposta:', quantidadeCartasResposta);
 
-    var thiss = $(".pontosUsuario[i='"+idUsuario+"']");
-    console.log(thiss);
+    var qtdJogadores = parseInt($("#PlayersOn").text());
+    // console.log('Quantidade de jogadores on '+(qtdJogadores-1));
+    //! Verifica se todos os jogadores responderam para escolher uma resposta
+    if(quantidadeCartasResposta == (qtdJogadores-1)){
+        var idUsuario = $(element).attr("idUsuario");
+        var textoParagrafo = $(element).find(".respostaSelecionada").text();  
+        
+        console.log("ID do Usuário:"+ idUsuario);
+        console.log("Texto do Parágrafo:"+ textoParagrafo);
+        console.log("Ponto para: " + idUsuario);        
 
-    var PontoAtual = thiss.text();
-    console.log(PontoAtual);
+        var thiss = $(".pontosUsuario[i='"+idUsuario+"']");
+        console.log(thiss);
 
-    //! enviar pontuação para o usuario
-    socket.send(JSON.stringify({ type: 'pontuacaoUsuario', idUsu: idUsuario, thiss: PontoAtual}));
+        var PontoAtual = thiss.text();
+        console.log(PontoAtual);
 
-    //! Encerra a Rodada
-    socket.send(JSON.stringify({ type: 'finalizarRodada' }));
-     
-    //? aguardar finalizar a rodada para iniciar a proxima
-    //!inicia proxima rodada 
-    //  socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idHostaRodada }));
+        //! enviar pontuação para o usuario
+        socket.send(JSON.stringify({ type: 'pontuacaoUsuario', idUsu: idUsuario, thiss: PontoAtual}));
 
+        //! Encerra a Rodada
+        socket.send(JSON.stringify({ type: 'finalizarRodada' }));
+        
+        //? aguardar finalizar a rodada para iniciar a proxima
+        //!inicia proxima rodada 
+        //  socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idHostaRodada }));
 
+    }else{
+        alert("Aguarde todos os jogadores responderem");
+    }
 }
 
 
@@ -494,10 +559,10 @@ function responderPergunta(element) {
 - HOST DEVE ESCOLHER A CARTA DE RESPOSTA [✅]
 - CARTA DE RESPOSTA DEVE TER O ID DO USUARIO [✅]
 - SISTEMA DE PONTUAÇÃO, AO ESCOLHER A CARTA DE RESPOSTA [✅]
-- CRIAR CARTAS DE RESPOSTAS []
-- CRIAR RANDOMIZAÇÃO SEM REPETIR RESPOSTAS []
-- APOS RESPONDER: RECEBER PROXIMA CARTA []
-- TER NO MINIMO 3 JOGADORES PARA INICIAR A PARTIDA []
+- CRIAR CARTAS DE RESPOSTAS [✅]
+- CRIAR RANDOMIZAÇÃO SEM REPETIR RESPOSTAS [✅]
+- APOS RESPONDER: RECEBER PROXIMA CARTA [✅]
+- TER NO MINIMO 3 JOGADORES PARA INICIAR A PARTIDA [✅]
 
 
 -----------CORREÇÃO DE BUGS-----------
@@ -509,8 +574,8 @@ function responderPergunta(element) {
 
 
 -----------MELHORIAS-----------
-- TEMPORIZADOR PARA ENVIAR RESPOSTAS AUTOMATICAMENTE(caso jogador nem envie) []
-- HOST, SOMENTE VOTAR APOS TODOS ENVIAREM AS RESPOSTAS []
+- TEMPORIZADOR PARA ENVIAR RESPOSTAS AUTOMATICAMENTE(caso jogador não envie) []
+- HOST, SOMENTE VOTAR APOS TODOS ENVIAREM AS RESPOSTAS [✅]
 - ENVIAR RESPOSTAS 'OCULTAS' E O HOST VIRAR UMA A UMA (ou todas de uma vez) []
 - SISTEMAS DE SALAS []
 - SALAS PRIVADAS(senha) []

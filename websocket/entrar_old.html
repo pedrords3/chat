@@ -23,15 +23,17 @@
 		<p id="TextoLoad" style="font-weight:bold">Carregando...</p>
 	</div>
 
-    <div style="height: 100vh; width: 100%; background-color: lightgray">
-        <div style="height: 50%; width: 100%; background-color: black">
-            <div class="d-flex justify-content-between" >
-                <div class="propag text-center text-white">PROPAGANDA</div>
-                <div style="width: 30%; ">
-                    <div id="chat"></div>
-                    <textarea id="messageInput" placeholder="Digite aqui" maxlength="50"></textarea>
-                    <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
-                </div>
+    <div class="container-fluid display">
+        <div class="row">
+            <!-- Coluna à esquerda ocupando 25% -->
+            <div class="col-md-3"> 
+                <div id="chat"></div>
+                <textarea id="messageInput" placeholder="Digite aqui" maxlength="100"></textarea>
+                <button id="btnEnviar" class="btn" onclick="sendMessage()">Enviar</button>
+            </div>
+            <!-- Coluna à direita ocupando 75% -->
+            <div class="col-md-9" style="height: 100vh;">  
+                <!-- //! Conteúdo para a coluna à direita -->
                 <div class="Mesa">
                     <div class="container">
                         <div class="row text-white">
@@ -43,44 +45,46 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div id="deck" class="d-flex justify-content-between">
                         <div id="escolhas" class="escolhasPlayers text-white row ">
+                            <!-- //* Adicionar cartas escolhidas -->
                         </div>
                         <div class="cartas text-white text-center">
                             <p id="numPergunta">PERGUNTA -</p>
                             <p id="question">Partida em andamento!<br><br>Aguarde o inicio da próxima rodada</p>
                         </div>
                         <div id="Rodada" class="text-white ">
+                            <!-- <p>Rodada 1</p> -->
                             <p>Pontuação:</p>
                             <div id="jogadoresOnline" >
-                                
+                                <!-- <h5 class="textoJogadoresOn">Pedro: 1</h5>-->
+                                <!-- //!adicionar todos os jogadores dinamicamente -->
                             </div>
                         </div>
                         
                     </div>
-                </div>
-                
-            </div>
-            
-        </div>
-        <div style="height: 50%; width: 100%; background-color: black">
-            <div class="container">
-                <div class="row text-white">
-                    <div class="col text-center">
-                        <p >SUAS RESPOSTAS</p>
-                    </div>
-                    <button id="iniciarPartida" style="display: none;">Iniciar Partida</button>
-                    <p id="whoHost" style="display:none">VOCÊ É O MANDANTE DESSA RODADA</p>
-                </div>
-            </div>
-            <br>
-                <div id="resposta" class="row"></div>
-            </div>
-            
-        </div>
+                    <br>
 
+                    <div class="container">
+                        <div class="row text-white">
+                            <div class="col text-center">
+                                <p >SUAS RESPOSTAS</p>
+                            </div>
+                            <div class="col text-left">
+                                <button id="iniciarPartida" style="display: none;">Iniciar Partida</button>
+                                <p id="whoHost" style="display:none">VOCÊ É O MANDANTE DESSA RODADA</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="resposta" class="row">
+                        <!-- //! carrega dinamicamente -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-    
     
     <!-- //! SCRIPT CLIENT -->
     <script src="assets/js/index.js"></script>
