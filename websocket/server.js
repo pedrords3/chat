@@ -157,13 +157,13 @@ server.on('connection', (socket) => {
             
             }else if(data.type === 'receberCarta'){
                 let idJogador =  data.idUsu;
-                let cartaSelecionada =  data.cartaSelecionada;
+                let cartathiss =  data.cartaSelecionada;
                 let arrayResposta = []
                 arrayResposta.push(respostasRandom());
 
                 server.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
-                        client.send(JSON.stringify({ type: 'receberCartaResposta'+idJogador+'', cartas: arrayResposta, idPlayer: idJogador, cartaSelec: cartaSelecionada }));
+                        client.send(JSON.stringify({ type: 'receberCartaResposta'+idJogador+'', cartas: arrayResposta, idPlayer: idJogador, cartaSelecionada: cartathiss }));
                     }
                 });
 
