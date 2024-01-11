@@ -155,6 +155,17 @@ server.on('connection', (socket) => {
                 const Thiss = data.thiss;
                 pontuacaoJogador(idPontuador, Thiss);
             
+            }else if(data.type === 'receberCarta'){
+                let idJogador =  data.idUsu;
+                let arrayResposta = []
+                arrayResposta.push(respostasRandom());
+
+                server.clients.forEach((client) => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(JSON.stringify({ type: 'receberCartaResposta'+idJogador+'', cartas: arrayResposta, idPlayer: idJogador }));
+                    }
+                });
+
             }
         } catch (error) {
             console.error('Erro ao analisar a mensagem JSON:', error);
