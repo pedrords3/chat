@@ -175,6 +175,9 @@ server.on('connection', (socket) => {
                 //! se recebeu comando para iniciar partida
                 if(iniciarPartida == true){
                     salas.push(salaSelecionada); //* Grava id da sala
+                    salas = salas.filter(item => item !== 0);
+                }else{
+                    salas.push(0);
                 }
 
                 
