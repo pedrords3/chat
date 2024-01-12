@@ -1,3 +1,21 @@
+/* Scroll padrão */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Cor do scroll */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 2px;
+}
+
+/* Cor de fundo do scroll */
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+
 #chat {
     background-color: black;
     color:white;
@@ -12,65 +30,7 @@
     word-wrap: break-word;
 }
 
-#chat::-webkit-scrollbar {
-    width: 5px; /* //* Largura da barra de rolagem */
-}
 
-#chat::-webkit-scrollbar-thumb {
-    background-color: #888; /* //*Cor da barra de rolagem */
-    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
-}
-/* //*Estilos para o Internet Explorer */
-#chat::-ms-scrollbar {
-    width: 5px;
-}
-#chat::-ms-thumb {
-    background-color: #888;
-    border-radius: 5px;
-}
-
-#resposta::-webkit-scrollbar {
-    width: 5px; /* //* Largura da barra de rolagem */
-}
-
-#resposta::-webkit-scrollbar-thumb {
-    background-color: #888; /* //*Cor da barra de rolagem */
-    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
-}
-/* //*Estilos para o Internet Explorer */
-#resposta::-ms-scrollbar {
-    width: 5px;
-}
-#resposta::-ms-thumb {
-    background-color: #888;
-    border-radius: 5px;
-}
-
-#Rodada::-webkit-scrollbar {
-    width: 5px; /* //* Largura da barra de rolagem */
-}
-
-#Rodada::-webkit-scrollbar-thumb {
-    background-color: #888; /* //*Cor da barra de rolagem */
-    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
-}
-/* //*Estilos para o Internet Explorer */
-#Rodada::-ms-scrollbar {
-    width: 5px;
-}
-#Rodada::-ms-thumb {
-    background-color: #888;
-    border-radius: 5px;
-}
-
-.cartas::-webkit-scrollbar {
-    width: 5px; /* //* Largura da barra de rolagem */
-}
-
-.cartas::-webkit-scrollbar-thumb {
-    background-color: #888; /* //*Cor da barra de rolagem */
-    border-radius: 5px; /* //*Raio da borda da barra de rolagem */
-}
 /* //*Estilos para o Internet Explorer */
 .cartas::-ms-scrollbar {
     width: 5px;
@@ -190,17 +150,22 @@ body{
     border-radius: 5px;
     margin: 5px 1%;
     font-size: 11px;
+    display: flex;
+    flex-direction: column; 
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .escolherResposta{
     width: 100%;
     height: 20px;
     font-size: 9px;
-    margin-bottom: 0;
-    text-align: center;
-    border-radius: 5px;
-    background-color: white;
-    color:black;
+    color: rgb(255, 255, 161)
+    /* margin-bottom: 0; */
+    /* text-align: center; */
+    /* border-radius: 5px; */
+    /* background-color: white; */
+    /* color:black; */
     
 }
 
