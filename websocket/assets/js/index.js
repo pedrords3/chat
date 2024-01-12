@@ -134,9 +134,9 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             if(idUser == hostMandante){//* verificar se usuario é o host para poder responder a pergunta
                 var str = 
             `<div class="carta-resposta cursorPointer" onclick="responderPergunta(this)" idUsuario=${messageData.iduser}>
-                <p class="respostaSelecionada" value="${respostaText}"> ${respostaText}</p>
-                <div class="escolherResposta" >Escolher essa</div>
-            </div>`
+                <div class="escolherResposta text-center">Escolher</div>    
+                <p class="respostaSelecionada" style="margin-top:10px" value="${respostaText}"> ${respostaText}</p>
+            </div>`//<div class="escolherResposta" >Escolher essa</div>
             } else{
                 var str = 
                 `<div class="carta-resposta cursorPointer">
