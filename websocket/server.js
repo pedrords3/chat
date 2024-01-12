@@ -18,13 +18,10 @@ const idUsersOnline = new Set();
 
 let logMessages = []; //* Lista para armazenar mensagens
 let quantidadeUsuariosOnline = 0;
-// var idUsuario = 0;
 let sequenciaIds = [];
 let idPlayer = 0;
 let ArrayPlayers = [];
-let contagem = 0;
 
-// let MaxPlayer = [1,2,3,4,5,6,7,8,9,10]; //* numero maximo de jogadores é 10
 
 server.on('connection', (socket) => {
     console.log('Cliente conectado');
@@ -226,7 +223,7 @@ server.on('connection', (socket) => {
     //* Event listener para fechar a conexão
     socket.on('close', () => {
         console.log('Cliente desconectado');
-        const exitMessage = { type: 'exit', data: 'Saiu do chat', sender: usuario, iduser: idPlayer };
+        const exitMessage = { type: 'exit', data: 'Foi de base', sender: usuario, iduser: idPlayer };
     
         //* Remover o usuário da lista de usuários online
         if (usuariosOnline.has(usuario)) {
