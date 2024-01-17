@@ -166,7 +166,7 @@ const perguntas = [
     {id:165, dinamica: false, pergunta:"O QUE AJUDOU OBAMA A RELAXAR DEPOIS DO TRABALHO?"},
     {id:166, dinamica: false, pergunta:"O NOVO PROJETO DE LEI DECLARA O DIA DE _____ UM FERIADO NACIONAL."},
     {id:167, dinamica: false, pergunta:"O QUE FICA MELHOR COM A IDADE?"},
-    {id:168, dinamica: false, pergunta:"ANTROPÓLOGOS RECENTEMENTE DESCOBRIRAM UM TRIBO PRIMITIVA QUE CULTUA ____."},
+    {id:168, dinamica: false, pergunta:"ANTROPÓLOGOS RECENTEMENTE DESCOBRIRAM UMA TRIBO PRIMITIVA QUE CULTUA ____."},
     {id:169, dinamica: false, pergunta:"FINALMENTE! UM SERVIÇO QUE ENTREGA _____ DIRETO NA SUA PORTA!"},
     {id:170, dinamica: false, pergunta:"ESTUDO MOSTRA QUE RATOS DE LABORATÓRIO ATRAVESSAM LABIRINTOS 50% MAIS RÁPIDO DEPOIS DE SEREM EXPOSTOS À ____."},
     {id:171, dinamica: false, pergunta:"DURANTE MEU TEMPO EM HOGWARTS, EU DESCOBRI QUE MEU PATRONO ERA _____."},
