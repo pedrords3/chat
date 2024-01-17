@@ -615,6 +615,7 @@ const respostas = [
     {resposta:"DIDI. "},
     {resposta:"O SOM DE UMA PUNHETA SENDO BATIDA NO ESCURO."},
     {resposta:"ESCRAVIDÃO."},
+    {resposta:"UMA PICA DE PELÚCIA."},
     {resposta:"A CRÔNICA. "},
     {resposta:"LIMPEZA ÉTNICA. "},
     {resposta:"ENSINO MÉDIO."},
