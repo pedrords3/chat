@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/icone-XCards.png">
     
-    <title>HexChat</title> 
+    <title>X-Ten Cards</title> 
 
     <script src="assets/js/jquery.3.2.1.min.js"></script>    
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/all.min.css"> -->
 
 </head>
 <body>   
@@ -26,7 +29,7 @@
     <div style="height: 100vh; width: 100%; background-color: lightgray">
         <div style="height: 50%; width: 100%; background-color: black">
             <div class="d-flex justify-content-between" >
-                <div class="propag text-center text-white">PROPAGANDA</div>
+                <!-- <div class="propag text-center text-white">PROPAGANDA</div> -->
                 <div style="width: 30%; ">
                     <div id="chat"></div>
                     <textarea id="messageInput" placeholder="Digite aqui" maxlength="50"></textarea>
@@ -36,22 +39,22 @@
                     <div class="container">
                         <div class="row text-white">
                             <div class="col text-center">
-                                <p >HEX PLAY</p>
+                                <p class="fonteJogo">X-Ten Cards</p>
                             </div>
                             <div class="col text-right">
-                                <p >Jogadores online: <span id="PlayersOn"></span> </p>
+                                <p class="fonteJogo">Jogadores online: <span id="PlayersOn"></span> </p>
                             </div>
                         </div>
                     </div>
                     <div id="deck" class="d-flex justify-content-between">
                         <div id="escolhas" class="escolhasPlayers text-white row ">
                         </div>
-                        <div class="cartas text-white text-center">
-                            <p id="numPergunta">PERGUNTA -</p>
-                            <p id="question">Partida em andamento!<br><br>Aguarde o inicio da próxima rodada</p>
+                        <div class="cartas-pergunta text-white text-center">
+                            <p id="numPergunta" class="fonteJogo">PERGUNTA -</p>
+                            <p id="question" class="fonteJogo">Em preparação!<br><br>Aguarde o Mandante iniciar a partida</p>
                         </div>
                         <div id="Rodada" class="text-white ">
-                            <p>Pontuação:</p>
+                            <p class="fonteJogo">Pontuação:</p>
                             <div id="jogadoresOnline" >
                                 
                             </div>
@@ -67,10 +70,11 @@
             <div class="container">
                 <div class="row text-white">
                     <div class="col text-center">
-                        <p >SUAS RESPOSTAS</p>
+                        <p class="fonteJogo" >SUAS RESPOSTAS</p>
                     </div>
-                    <button id="iniciarPartida" style="display: none;">Iniciar Partida</button>
-                    <p id="whoHost" style="display:none">VOCÊ É O MANDANTE DESSA RODADA</p>
+                    <button id="iniciarPartida" class="fonteJogo btn btn-secondary" style="display: none;">Iniciar Partida</button>
+                   
+                    <p id="whoHost" class="fonteJogo" style="display:none; margin-left:2px"> <i class="fas fa-crown" style="color: #FFD43B;"></i> VOCÊ É O MANDANTE DESSA RODADA</p>
                 </div>
             </div>
             <br>

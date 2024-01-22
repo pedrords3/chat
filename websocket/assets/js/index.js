@@ -133,13 +133,13 @@ const socket = new WebSocket('wss://chat-tqep.onrender.com');
             //? CRIPTOGRAFAR ID DO USUARIO ??
             if(idUser == hostMandante){//* verificar se usuario é o host para poder responder a pergunta
                 var str = 
-            `<div class="carta-resposta cursorPointer" onclick="responderPergunta(this)" idUsuario=${messageData.iduser}>
+            `<div class="carta-resposta cursorPointer text-center text-justify" onclick="responderPergunta(this)" idUsuario=${messageData.iduser}>
                 <div class="escolherResposta text-center">Escolher</div>    
                 <p class="respostaSelecionada" style="margin-top:10px" value="${respostaText}"> ${respostaText}</p>
             </div>`//<div class="escolherResposta" >Escolher essa</div>
             } else{
                 var str = 
-                `<div class="carta-resposta cursorPointer">
+                `<div class="carta-resposta cursorPointer text-center text-justify">
                     <p class="respostaSelecionada"  value="${respostaText}"> ${respostaText}</p>
                 </div>`
             }
@@ -372,7 +372,7 @@ document.addEventListener('click', (event) => {
 
         const answerText = selectedAnswer.textContent.trim();
         const answerHTML = selectedAnswer.outerHTML;
-        socket.send(JSON.stringify({ type: 'receberCarta', idUsu: idUser, cartaSelecionada: answerHTML, idCarta: idCartaResposta })); //VOLTAAQUI
+        socket.send(JSON.stringify({ type: 'receberCarta', idUsu: idUser, cartaSelecionada: answerHTML, idCarta: idCartaResposta }));
         // alert(answerText);
         socket.send(JSON.stringify({ type: 'answer', data: 'Respondeu', sender: username, resposta: answerText, idusuario: idUser }));
         DesabilitarCartas(); //* ao responder, desabilita cartas
@@ -390,7 +390,10 @@ function CriaCartas(arrayCartas) { //* SELECIONA 10 CARTAS E MONTA AS CARTAS RES
         const resposta = arrayCartas[i].resposta;
         // console.log(resposta);
     
-        str += `<div class="cartas text-white cursorPointer" codigo="${i + 1}">
+        str += `<div class="cartas cursorPointer" codigo="${i + 1}">
+                    <div class="d-flex justify-content-center">
+                        <img src="img/Logo.png" style="width:20px; height: 30px">
+                    </div>
                     <div id="cartaResp`+i+`" class="carta-content answer" value="${resposta}">${resposta}</div>
                 </div>`;
     }
@@ -426,7 +429,7 @@ $("#iniciarPartida").on("click",function(){
     //!VERIFICA SE QUANTIDADE DE JOGAORES É MAIOR OU IGUAL A 3
     var qtdJogadores = parseInt($("#PlayersOn").text());
 
-    if(qtdJogadores >= 3){
+    // if(qtdJogadores >= 3){// voltaaqui
 
         $("#iniciarPartida").css("display","none");
 
@@ -436,9 +439,9 @@ $("#iniciarPartida").on("click",function(){
         console.log("enviando sinal para criar cartas de resposta");
 
         socket.send(JSON.stringify({ type: 'novaRodada', idUsuario: idUser })); //* Enviar comando para iniciar a rodada
-    }else{
-        alert("Aguarde ter no minímo 3 jogadores");
-    }
+    // }else{
+    //     alert("Aguarde ter no mínimo 3 jogadores");
+    // }
 })
 
 

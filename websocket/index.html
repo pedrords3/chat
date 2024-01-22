@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/icone-XCards.png">
     
-    <title>HexPlay Entrar</title> 
+    <title>X-Ten Cards</title> 
 
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/index.css">
@@ -13,22 +14,22 @@
 </head>
 <body class="bg-dark text-white">  
 
-    <div class="d-flex justify-content-center my-4">BEM VINDO</div>
+    <div class="d-flex justify-content-center my-4 fontePadrao">BEM VINDO</div>
 
     <div class="d-flex justify-content-around text-white">
         <div class="mx-2">
-            <p>Salas Criadas:</p>
+            <p class="fontePadrao">Salas Criadas:</p>
             <div id="salasCriadas" class="border border-white p-2" style="height: 80vh; max-width: 50vh; overflow-y: auto;">
                 <div class="border border-purple p-2">
-                    <button class="btn Sala1 w-100">Sala 1</button>
+                    <button class="btn Sala1 w-100 fontePadrao">Sala 1</button>
                 </div>
             </div>
         </div>
 
         <div class="mx-2">
-            <p>Qual seu nick</p>
+            <p class="fontePadrao">Qual seu nick</p>
             <input id="nomePlayer" type="text" class="form-control mb-2">
-            <p id="Rules" class="cursorPointer mb-2" data-toggle="modal" data-target="#myModal">Ler as Regras
+            <p id="fontePadrao" class="cursorPointer mb-2 fontePadrao" data-toggle="modal" data-target="#myModal">Ler as Regras
                 <svg width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
                     <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
                     <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
@@ -37,10 +38,10 @@
         </div>
 
         <div class="mx-2">
-            <p>Criar sala</p>
+            <p class="fontePadrao">Criar sala</p>
             <div id="criarSala" class="border border-white p-2" style="height: 80vh; max-width: 50vh; overflow-y: auto;">
                 <div class="border border-purple p-2">
-                    <button class="btn w-100" style="visibility: hidden;">Sala A</button>
+                    <button class="btn w-100 fontePadrao" style="visibility: hidden;">Sala A</button>
                 </div>
             </div>
         </div>
@@ -57,7 +58,27 @@
                     </button>
                 </div>
                 <div class="modal-body text-black">
-                    <p>Descrição das regras.</p>
+                    <p class="fontePadrao">"X-Ten Cards" é um jogo de festa irreverente e politicamente incorreto 
+                        que envolve a criação de combinações engraçadas e muitas vezes chocantes de frases:</p>
+                    <p class="fontePadrao"><strong>Objetivo do jogo:</strong></p>
+                    <p class="fontePadrao">
+                        O objetivo do jogo é fazer as combinações mais engraçadas e muitas vezes absurdas de frases, utilizando as cartas disponíveis, para ganhar pontos.
+                    </p>
+                    <p class="fontePadrao"><strong>Como funciona:</strong></p>
+                    <p class="fontePadrao">Cada jogador começa com 10 cartas brancas (cartas de respostas).</p>
+                    <p class="fontePadrao">A carta preta aparece a cada rodada como pergunta ou para completar a frase, e os jogadores que não forem o "Mandante" podem usar 1 carta branca para responder</p>
+                    <p class="fontePadrao">Um jogador é selecionado a cada rodada para ser o "Mandante" que será o responsável para escolher a resposta anonimamente que mais te agradar</p>
+                    <p class="fontePadrao">A carta do jogador que for escolhida pelo "Mandante" recebe 1 ponto naquela rodada</p>
+                    <p class="fontePadrao">O jogo continua até que os jogadores decidam parar ou até que uma condição pré-determinada de pontuação seja atingida.</p>
+                    <p class="fontePadrao"><strong>Vencedor:</strong></p>
+                    <p class="fontePadrao">O jogo não tem necessariamente um vencedor final, mas geralmente é jogado até que os jogadores decidam parar. O jogador com mais pontos no final do jogo é considerado o "vencedor".</p>
+                    <br>
+                    <p class="fontePadrao"><b>É importante notar que "X-Ten Cards" é um jogo de humor negro e conteúdo adulto, e pode não ser adequado para todos os públicos. 
+                        Os jogadores devem estar cientes disso ao decidirem jogar.</b></p>
+                    <p class="fontePadrao2"><b>Se você é chorão e gosta de ficar de mimimi, nem entre pra jogar, nós aconselhamos procurar um psicólogo para tratar seus problemas.</b></p>
+                    
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Fechar</button>
@@ -74,7 +95,7 @@
                     <h5 class="modal-title text-white" id="myModalLabel" >Parado aí</h5>
                   </div>
                 <div class="modal-body">
-                    <p id="mensagemConfirmacao" class="text-black" contador=0> Voce tem mais de 18?</p>
+                    <p id="mensagemConfirmacao" class="text-black fontePadrao2" contador=3> Você tem mais de 18 anos, leu as regras e tem certeza que deseja jogar?</p>
                 </div>
   
                 <div class="modal-footer">
