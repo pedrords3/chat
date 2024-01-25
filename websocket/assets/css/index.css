@@ -151,7 +151,7 @@ body{
     flex-direction: column;
     overflow-y: auto;
     font-size: 14px;
-    padding: 10px; /* Espaçamento interno */
+    /* padding: 10px;  */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
     transition: transform 0.2s ease-in-out; /* Efeito de transição */
 }
@@ -200,15 +200,20 @@ body{
 .cartas:hover{
     transform: scale(1.5);
 } */
+.answer{
+    font-size: 11px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+
+}
 .carta-content {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* margin-top: -20px; */
     text-align: center;
-    /* padding: 10px;  */
-    /* Adicione algum espaço interno para melhorar o visual */
+    padding: 10px; 
+    overflow-x: none;
+
 }
 .cartas-desabilitadas {
     opacity: 0.5; /* Torna os elementos semi-transparentes quando desabilitados */
